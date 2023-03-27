@@ -15,7 +15,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['tsconfig.json']
+    project: ['./tsconfig.json']
   },
   plugins: [
     'react',
@@ -24,6 +24,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-namespace": "off"
   }
 }
