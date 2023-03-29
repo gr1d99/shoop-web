@@ -25,5 +25,5 @@ jobs:
         with:
           component: false
           build: npm run build
-          start: start:ci
+          start: npm run start:ci
           wait-on: 'http://localhost:8080'
