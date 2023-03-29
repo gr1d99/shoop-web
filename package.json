@@ -12,9 +12,15 @@
     "start:ci": "http-server -p 8080 -c-1 ./dist --silent"
   },
   "dependencies": {
-    "cypress": "^12.8.1",
+    "@headlessui/react": "^1.7.13",
+    "@heroicons/react": "^2.0.16",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.9",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.9.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
@@ -25,6 +31,7 @@
     "@typescript-eslint/parser": "^5.56.0",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
+    "cypress": "^12.9.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
@@ -39,7 +46,7 @@
     "http-server": "^14.1.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.7",
-    "tailwindcss": "^3.2.7",
+    "tailwindcss": "^3.3.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.0",
     "vite-plugin-eslint": "^1.8.1"

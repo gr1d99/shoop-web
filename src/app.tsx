@@ -1,5 +1,7 @@
+import { withAppLayout } from './components/layout';
+
 const App = (): JSX.Element => {
-  return <div className="text-center bg-yellow-500">Hello</div>;
+  return <h1>Home Page</h1>;
 };
 
-export default App;
+export default withAppLayout(App);
