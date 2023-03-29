@@ -25,5 +25,5 @@ jobs:
         with:
           component: false
           build: npm run build
-          start: start:ci:cypress
+          start: start:ci
           wait-on: 'http://localhost:8080'

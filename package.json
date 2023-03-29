@@ -9,8 +9,7 @@
     "preview": "vite preview",
     "cypress:open": "npx cypress open",
     "cypress:run": "npx cypress run",
-    "start:ci": "http-server -p 8080 -c-1 ./dist --silent",
-    "start:ci:cypress": "npm run start:ci & npm run cypress:run"
+    "start:ci": "http-server -p 8080 -c-1 ./dist --silent"
   },
   "dependencies": {
     "cypress": "^12.8.1",
