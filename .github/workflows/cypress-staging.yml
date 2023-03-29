@@ -2,8 +2,7 @@ name: Cypress Staging Tests
 
 on:
   push:
-    branches:
-      - staging
+    branches: [ * ]
 
 jobs:
   cypress-run:
