@@ -1,10 +1,5 @@
-name: Cypress Staging Tests
-
-on:
-  push:
-    branches:
-      - cypress-ci-integration
-
+name: Cypress E2E Tests
+on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
