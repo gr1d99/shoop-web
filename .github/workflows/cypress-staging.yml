@@ -3,7 +3,7 @@ name: Cypress Staging Tests
 on:
   push:
     branches:
-      - cypress-ci-integration
+      - staging
 
 jobs:
   cypress-run:
