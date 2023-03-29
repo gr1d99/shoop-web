@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5.x.x
+        uses: cypress-io/github-action@v5
         with:
           component: false
           build: npm run build
