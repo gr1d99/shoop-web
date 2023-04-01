@@ -1,18 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { Dialog, Menu, Transition, Disclosure } from '@headlessui/react';
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  ShoppingBagIcon,
-  ChevronRightIcon,
-  ArrowRightOnRectangleIcon
-} from '@heroicons/react/24/outline';
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { Dialog, Transition } from '@headlessui/react';
+import { Bars3Icon, BellIcon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { useAuth } from '../../contexts/auth-context';
 import { type TNavigationItems } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
-import { LoginLabel } from './login-label';
 import { utils } from '../../utils';
 import { ProfileDropdown } from '../nav/profile-dropdown';
 
@@ -157,7 +149,7 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
                               : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                           )}>
-                          {item.icon === null ? null : (
+                          {item.icon !== null ? (
                             <item.icon
                               className={utils.classNames(
                                 item.current
@@ -167,7 +159,7 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
                               )}
                               aria-hidden="true"
                             />
-                          )}
+                          ) : null}
                           {item.name}
                         </a>
                       ) : (
