@@ -10,7 +10,7 @@ const ReactQueryProvider = (props: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     if (!isMounted.current && isDev) {
-      setDevToolsOpen(true);
+      setDevToolsOpen(false);
       isMounted.current = true;
     }
   }, [isMounted.current]);

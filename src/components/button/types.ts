@@ -7,4 +7,5 @@ export interface Props extends React.ComponentPropsWithoutRef<'button'> {
   loading: boolean;
   icon?: null | undefined | typeof HeroIcon;
   label: string;
+  type: 'button' | 'submit';
 }
