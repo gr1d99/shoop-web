@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:cypress":  "npm run dev & npm run cypress:open",
+    "dev:cypress": "npm run dev & npm run cypress:open",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "cypress:open": "npx cypress open",
@@ -18,10 +18,12 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.9.0"
+    "react-router-dom": "^6.9.0",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",

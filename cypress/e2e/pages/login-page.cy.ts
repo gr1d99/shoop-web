@@ -13,6 +13,16 @@ describe('Login Page', () => {
     });
   });
 
+  it('shows validation errors', () => {
+    cy.visit('/login');
+    cy.get('[data-cy="login-form"]').as('loginForm');
+    cy.get('@loginForm').within(() => {
+      cy.get('@loginForm').submit();
+      cy.get('[data-cy="email-error"]').should('contain.text', 'Email is required');
+      cy.get('[data-cy="password-error"]').should('contain.text', 'Password is required');
+    });
+  });
+
   it('submits form', () => {
     cy.visit('/login');
     cy.get('[data-cy="login-form"]').as('loginForm');

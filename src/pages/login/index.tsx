@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 const LoginPage = (): JSX.Element => {
   const navigate = useNavigate();
   const handleSubmit: LoginFormProps['handleSubmit'] = (event) => {
-    event.preventDefault();
     navigate('/');
   };
   return (
