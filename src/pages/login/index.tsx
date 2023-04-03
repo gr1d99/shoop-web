@@ -1,14 +1,13 @@
 import React from 'react';
 import Card from '../../components/cards';
 import { withAppLayout } from '../../components/layout';
-import { LoginForm } from '../components/form';
-import { type LoginFormProps } from '../components/types';
-import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../contexts/auth-context';
+import { LoginForm } from './components/form';
+import { type LoginFormProps } from './types';
 const LoginPage = (): JSX.Element => {
-  const navigate = useNavigate();
-  const handleSubmit: LoginFormProps['handleSubmit'] = (event) => {
-    navigate('/');
+  const { signInUser } = useAuth();
+  const handleSubmit: LoginFormProps['handleSubmit'] = (values, setSubmitting) => {
+    signInUser(values, setSubmitting);
   };
   return (
     <div className="w-full lg:w-1/2 flex justify-center mx-auto rounded">

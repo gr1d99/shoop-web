@@ -1,9 +1,9 @@
-import Button from '../../components/button';
+import Button from '../../../components/button';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import { type FormValues, type LoginFormProps } from './types';
+import { type FormValues, type LoginFormProps } from '../types';
 import { Form, Field, type FormikHelpers, ErrorMessage, Formik } from 'formik';
-import { loginSchema } from '../login/schema';
+import { loginSchema } from '../schema';
 
 const LoginForm = (props: LoginFormProps): JSX.Element => {
   const { handleSubmit } = props;

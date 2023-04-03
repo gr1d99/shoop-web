@@ -1,4 +1,3 @@
-import { LockClosedIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { type Props } from './types';
 import { utils } from '../../utils';

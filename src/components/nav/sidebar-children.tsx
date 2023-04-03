@@ -1,7 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import { type TNavigationItem, type TNavigationItems } from './types';
+import { type TNavigationItem } from './types';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');

@@ -1,4 +1,4 @@
-import React, { HTMLProps } from 'react';
+import React from 'react';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode;

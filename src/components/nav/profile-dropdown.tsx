@@ -6,11 +6,16 @@ import { utils } from '../../utils';
 
 const ProfileDropdown = ({
   authenticated,
-  userNavigation
+  signOutUser,
+  username
 }: {
   authenticated: boolean;
-  userNavigation: Array<{ name: string; href: string }>;
+  signOutUser: () => Promise<void>;
+  username: string;
 }): JSX.Element => {
+  const navigation: Array<{ name: string; isLink: boolean; href?: string; action: () => any }> = [
+    { name: 'Sign Out', isLink: false, href: '', action: signOutUser }
+  ];
   return (
     <>
       {authenticated ? (
@@ -26,7 +31,7 @@ const ProfileDropdown = ({
               <span
                 className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                 aria-hidden="true">
-                Tom Cook
+                {username}
               </span>
               <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
             </span>
@@ -40,17 +45,30 @@ const ProfileDropdown = ({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
             <Menu.Items className="absolute left-0 z-10 -mt-28 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-              {userNavigation.map((item) => (
+              {navigation.map((item) => (
                 <Menu.Item key={item.name}>
                   {({ active }) => (
-                    <a
-                      href={item.href}
-                      className={utils.classNames(
-                        active ? 'bg-gray-50' : '',
-                        'block px-3 py-1 text-sm leading-6 text-gray-900'
-                      )}>
-                      {item.name}
-                    </a>
+                    <>
+                      {item.isLink ? (
+                        <a
+                          href={item.href}
+                          className={utils.classNames(
+                            active ? 'bg-gray-50' : '',
+                            'block px-3 py-1 text-sm leading-6 text-gray-900'
+                          )}>
+                          {item.name}
+                        </a>
+                      ) : (
+                        <button
+                          className={utils.classNames(
+                            active ? 'bg-gray-50' : '',
+                            'block px-3 py-1 text-sm leading-6 text-gray-900'
+                          )}
+                          onClick={item.action}>
+                          {item.name}
+                        </button>
+                      )}
+                    </>
                   )}
                 </Menu.Item>
               ))}

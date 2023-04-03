@@ -21,15 +21,11 @@ const navigation: TNavigationItems = [
     ]
   }
 ];
-const userNavigation: Array<{ name: string; href: string }> = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' }
-];
 
 const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
   const { children } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { authenticated } = useAuth();
+  const { authenticated, signOutUser, username } = useAuth();
 
   return (
     <div className="h-full">
@@ -115,7 +111,8 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
                       <li className="mt-auto">
                         <ProfileDropdown
                           authenticated={authenticated}
-                          userNavigation={userNavigation}
+                          signOutUser={signOutUser}
+                          username={username}
                         />
                       </li>
                     </ul>
@@ -171,7 +168,11 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
               </li>
               <li className="mt-auto">
                 {/* Profile dropdown */}
-                <ProfileDropdown authenticated={authenticated} userNavigation={userNavigation} />
+                <ProfileDropdown
+                  authenticated={authenticated}
+                  signOutUser={signOutUser}
+                  username={username}
+                />
               </li>
             </ul>
           </nav>

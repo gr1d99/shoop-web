@@ -11,3 +11,7 @@ export interface LoginFormProps {
     setSubmitting: FormikHelpers<FormValues>['setSubmitting']
   ) => void;
 }
+
+export interface LoginResponse {
+  token: string;
+}
