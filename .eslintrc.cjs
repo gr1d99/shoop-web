@@ -14,9 +14,12 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx', '**/*.js'],
       plugins: [
         '@typescript-eslint',
-        'unused-imports',
+        'promise',
+        'import',
         'tailwindcss',
-        'simple-import-sort',
+        'unused-imports',
+        'prettier',
+        // 'simple-import-sort',
       ],
       extends: [
         'standard-with-typescript',
@@ -39,9 +42,6 @@ module.exports = {
   },
   plugins: [
     'react',
-    'promise',
-    'import',
-    'prettier'
   ],
   rules: {
     "react/react-in-jsx-scope": "off",

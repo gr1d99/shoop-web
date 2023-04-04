@@ -1,2 +1,3 @@
 cypress.config*
 server.js
+vite.config.ts
