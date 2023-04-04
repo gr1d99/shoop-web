@@ -175,8 +175,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     }
   }, [isSuccess, state.authenticated]);
   const signInUser: IAuthContext['signInUser'] = (values, setSubmitting) => {
-    mutate(values);
-    setSubmitting(false);
+    mutate(values, {
+      onSettled: () => {
+        setSubmitting(false);
+      }
+    });
   };
 
   const signOutUser = async () => {
