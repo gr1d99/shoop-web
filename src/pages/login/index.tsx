@@ -10,7 +10,7 @@ const LoginPage = (): JSX.Element => {
     signInUser(values, setSubmitting);
   };
   return (
-    <div className="w-full lg:w-1/2 flex justify-center mx-auto rounded">
+    <div className="mx-auto flex w-full justify-center rounded lg:w-1/2">
       <Card>
         <Card.Content className="flex flex-1 px-4">
           <LoginForm handleSubmit={handleSubmit} />
@@ -19,5 +19,7 @@ const LoginPage = (): JSX.Element => {
     </div>
   );
 };
+
+LoginPage.whyDidYouRender = true;
 
 export default withAppLayout(LoginPage);

@@ -60,7 +60,7 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
                   leave="ease-in-out duration-300"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0">
-                  <div className="absolute top-0 left-full flex w-16 justify-center pt-5">
+                  <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
                     <button
                       type="button"
                       className="-m-2.5 p-2.5"

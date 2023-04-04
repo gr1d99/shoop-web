@@ -3,8 +3,8 @@ import React from 'react';
 
 const LoginLabel = () => {
   return (
-    <a className="inline-flex space-x-1 items-center" href="/login">
-      <ArrowRightOnRectangleIcon className="leading-6 text-gray-900 h-4 w-4" />
+    <a className="inline-flex items-center space-x-1" href="/login">
+      <ArrowRightOnRectangleIcon className="h-4 w-4 leading-6 text-gray-900" />
       <span className="text-sm font-semibold leading-6 text-gray-900">Login</span>
     </a>
   );

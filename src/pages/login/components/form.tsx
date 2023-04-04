@@ -8,8 +8,8 @@ import { loginSchema } from '../schema';
 const LoginForm = (props: LoginFormProps): JSX.Element => {
   const { handleSubmit } = props;
   return (
-    <div className="min-h-full sm:px-6 lg:px-2 pb-2">
-      <div className="flex flex-col space-y-2 w-full max-w-md">
+    <div className="min-h-full pb-2 sm:px-6 lg:px-2">
+      <div className="flex w-full max-w-md flex-col space-y-2">
         <div>
           <h2
             className="text-center text-2xl font-bold tracking-tight text-gray-900"
@@ -25,9 +25,10 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
           onSubmit={(values, { setSubmitting }: FormikHelpers<FormValues>) => {
             handleSubmit(values, setSubmitting);
           }}
-          validationSchema={loginSchema}>
+          validationSchema={loginSchema}
+          enableReinitialize>
           <Form
-            className="w-full flex flex-col space-y-5"
+            className="flex w-full flex-col space-y-5"
             data-cy="login-form"
             method="post"
             action="/"
@@ -51,7 +52,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                 <ErrorMessage
                   data-cy="email-error"
                   name="email"
-                  className="text-xs text-red-500 pb-2"
+                  className="pb-2 text-xs text-red-500"
                   component="div"
                 />
               </div>
@@ -72,7 +73,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                 <ErrorMessage
                   name="password"
                   data-cy="password-error"
-                  className="text-xs text-red-500 pb-2"
+                  className="pb-2 text-xs text-red-500"
                   component="div"
                 />
               </div>
