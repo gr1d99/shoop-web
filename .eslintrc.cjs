@@ -7,15 +7,35 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'standard-with-typescript',
     'plugin:prettier/recommended'
   ],
   overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx', '**/*.js'],
+      plugins: [
+        '@typescript-eslint',
+        'unused-imports',
+        'tailwindcss',
+        'simple-import-sort',
+      ],
+      extends: [
+        'standard-with-typescript',
+        'plugin:tailwindcss/recommended',
+        'plugin:prettier/recommended',],
+      parserOptions: {
+        project: ['./tsconfig.json', './cypress/tsconfig.json']
+      },
+      rules: {
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/explicit-function-return-type": "warn",
+        "@typescript-eslint/no-var-requires": "warn",
+        "@typescript-eslint/method-signature-style": "off"
+      }
+    }
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json']
   },
   plugins: [
     'react',
@@ -25,6 +45,5 @@ module.exports = {
   ],
   rules: {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-namespace": "off"
   }
 }

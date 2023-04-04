@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
@@ -36,3 +35,11 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.visit('/login');
+  cy.get('[data-cy="login-form"]').as('loginForm');
+  cy.get('[data-cy="email"]').type('test@user.com').should('have.value', 'test@user.com');
+  cy.get('[data-cy="password"]').type('testpassword').should('have.value', 'testpassword');
+  cy.get('@loginForm').submit();
+});
