@@ -1,5 +1,5 @@
 const App = (): JSX.Element => {
-  return <div className="text-center bg-yellow-500">Hello</div>;
+  return <div className="bg-yellow-500 text-center">Hello</div>;
 };
 
 export default App;
