@@ -7,8 +7,8 @@ import router from './router';
 import RootLoader from './components/loaders';
 import ReactQueryProvider from './contexts/react-query-context';
 import { Toaster } from 'react-hot-toast';
-import './index.css';
 import { Analytics } from '@vercel/analytics/react';
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
