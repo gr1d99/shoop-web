@@ -4,7 +4,7 @@ import { Footer } from './footer';
 import React from 'react';
 const Card = (props: { children: React.ReactNode }): JSX.Element => {
   const { children } = props;
-  return <div className="flex flex-col rounded bg-gray-100 py-4">{children}</div>;
+  return <div className="flex flex-col rounded bg-gray-50 py-4">{children}</div>;
 };
 
 Card.Header = Header;

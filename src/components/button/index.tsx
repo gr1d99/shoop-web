@@ -4,7 +4,6 @@ import { utils } from '../../utils';
 
 const Button = (props: Omit<Props, 'children'>): JSX.Element => {
   const { variant, icon, loading, label, ...rest } = props;
-  console.log({ loading });
   return (
     <button className={utils.themes.getButtonTheme(variant)} disabled={loading} {...rest}>
       <>

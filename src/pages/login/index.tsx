@@ -20,6 +20,8 @@ const LoginPage = (): JSX.Element => {
   );
 };
 
-LoginPage.whyDidYouRender = true;
+if (import.meta.env.DEV) {
+  LoginPage.whyDidYouRender = true;
+}
 
 export default withAppLayout(LoginPage);
