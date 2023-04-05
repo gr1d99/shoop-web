@@ -10,7 +10,7 @@ const api = {
       .then(async ({ data }) => {
         return data;
       })
-      .catch(async (error): Promise<any> => {
+      .catch(async (error) => {
         return await Promise.reject(error);
       });
   }
