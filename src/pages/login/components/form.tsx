@@ -93,7 +93,9 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                     </label>
                   </div>
                   <div className="text-sm">
-                    <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a
+                      href="/forgot-password"
+                      className="font-medium text-indigo-600 hover:text-indigo-500">
                       Forgot password?
                     </a>
                   </div>
