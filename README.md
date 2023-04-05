@@ -1,3 +1,3 @@
 # shoop-web
 
-[Staging](https://shoop-web-staging.onrender.com/)
+[Staging](https://shoop-web-staging.vercel.app/)
