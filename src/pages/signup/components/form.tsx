@@ -186,7 +186,6 @@ const SignupForm = (props: SignupFormProps): JSX.Element => {
                     />
                   </div>
                 </div>
-
                 <div>
                   <Button
                     type="submit"
@@ -201,6 +200,14 @@ const SignupForm = (props: SignupFormProps): JSX.Element => {
                       />
                     }
                   />
+                </div>
+                <div className="text-center text-sm">
+                  <p>
+                    Have account?{' '}
+                    <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                      Sign in
+                    </a>
+                  </p>
                 </div>
               </Form>
             );

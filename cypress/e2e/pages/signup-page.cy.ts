@@ -38,7 +38,7 @@ describe('User Signup', () => {
     cy.dataCy('submit').click();
 
     cy.dataCy('toast').should('be.visible');
-    cy.dataCy('toast-success-message').should('have.text', 'Account successfully created!');
+    cy.dataCy('toast-success-message').should('have.text', 'Login with your username and password');
     cy.url().should('include', '/login');
   });
 });

@@ -12,7 +12,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
       <div className="flex w-full max-w-md flex-col space-y-2">
         <div>
           <h2
-            className="text-center text-2xl font-bold tracking-tight text-gray-900"
+            className="text-center text-2xl font-bold tracking-tight text-gray-900 subpixel-antialiased"
             data-cy="header">
             Sign in to your account
           </h2>
@@ -30,7 +30,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
           {({ isSubmitting }) => {
             return (
               <Form
-                className="flex w-full flex-col space-y-5"
+                className="flex w-full flex-col space-y-5 subpixel-antialiased"
                 data-cy="login-form"
                 method="post"
                 noValidate>
@@ -114,7 +114,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                     }
                   />
                 </div>
-                <div className="text-sm">
+                <div className="text-center text-sm">
                   <a className="font-medium text-indigo-600 hover:text-indigo-500" href="/signup">
                     Create Account
                   </a>
