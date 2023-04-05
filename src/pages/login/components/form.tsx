@@ -33,7 +33,6 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                 className="flex w-full flex-col space-y-5"
                 data-cy="login-form"
                 method="post"
-                action="/"
                 noValidate>
                 <Field type="hidden" name="remember" defaultValue="true" />
                 <div className="-space-y-px rounded-md shadow-sm">
@@ -95,7 +94,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                   </div>
                   <div className="text-sm">
                     <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                      Forgot your password?
+                      Forgot password?
                     </a>
                   </div>
                 </div>
@@ -114,6 +113,11 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                       />
                     }
                   />
+                </div>
+                <div className="text-sm">
+                  <a className="font-medium text-indigo-600 hover:text-indigo-500" href="/signup">
+                    Create Account
+                  </a>
                 </div>
               </Form>
             );

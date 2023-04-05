@@ -2,18 +2,18 @@ import React from 'react';
 import Card from '../../components/cards';
 import { withAppLayout } from '../../components/layout';
 import { useAuth } from '../../contexts/auth-context';
-import { LoginForm } from './components/form';
-import { type LoginFormProps } from './types';
-const LoginPage = (): JSX.Element => {
+import { SignupForm } from './components/form';
+import { type SignupFormProps } from './types';
+const SignupPage = (): JSX.Element => {
   const { signInUser } = useAuth();
-  const handleSubmit: LoginFormProps['handleSubmit'] = (values, setSubmitting) => {
+  const handleSubmit: SignupFormProps['handleSubmit'] = (values, setSubmitting) => {
     signInUser(values, setSubmitting);
   };
   return (
     <div className="mx-auto flex w-full justify-center rounded lg:w-1/2">
       <Card>
         <Card.Content className="flex flex-1 px-4">
-          <LoginForm handleSubmit={handleSubmit} />
+          <SignupForm handleSubmit={handleSubmit} />
         </Card.Content>
       </Card>
     </div>
@@ -21,7 +21,7 @@ const LoginPage = (): JSX.Element => {
 };
 
 if (import.meta.env.DEV) {
-  LoginPage.whyDidYouRender = true;
+  SignupPage.whyDidYouRender = true;
 }
 
-export default withAppLayout(LoginPage);
+export default withAppLayout(SignupPage);
