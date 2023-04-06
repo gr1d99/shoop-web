@@ -1,6 +1,8 @@
 import BannerOne from '../../assets/banners/1.jpg';
 import BannerTwo from '../../assets/banners/2.jpg';
 import BannerThree from '../../assets/banners/3.jpg';
+import React from 'react';
+
 const HomePage = (): JSX.Element => {
   return (
     <div className="h-screen">

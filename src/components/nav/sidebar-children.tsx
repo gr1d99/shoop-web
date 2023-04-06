@@ -6,7 +6,7 @@ import { type TNavigationItem } from './types';
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
-const SidebarChildren = ({ item }: { item: TNavigationItem }) => {
+const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
   return (
     <Disclosure as="div">
       {({ open }) => (
