@@ -1,6 +1,6 @@
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { LoginLabel } from '../layout/login-label';
+import { LoginLabel } from '../login-label';
 import React, { Fragment } from 'react';
 import { utils } from '../../utils';
 

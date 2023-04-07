@@ -6,10 +6,9 @@ import { useAuth } from '../../contexts/auth-context';
 import { type TNavigation } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Outlet } from 'react-router-dom';
 import { NavLink } from '../links';
-const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
-  const { children } = props;
+const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authenticated, signOutUser, username } = useAuth();
   const navigation = useLoaderData() as TNavigation;
@@ -183,7 +182,9 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
         </div>
 
         <main className="py-10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

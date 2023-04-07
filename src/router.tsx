@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, type LoaderFunctionArgs } from 'react-router-dom';
 import loadable from '@loadable/component';
 import { fetchCategories } from './pages/home/api/categories';
 import { type TNavigation, type TNavigationChildren } from './components/nav/types';
+import AppLayout from './components/layout';
 
 const LoginPage = loadable(
   async (/* webpackChunkName: "Login Page" */) => await import('./pages/login')
@@ -26,10 +27,9 @@ const navigation: TNavigation = {
 
 const router = createBrowserRouter([
   {
-    index: true,
     path: '/',
-    element: <App />,
-    loader: async () => {
+    element: <AppLayout />,
+    loader: async (_args: LoaderFunctionArgs) => {
       try {
         const { data } = await fetchCategories({ page: 1, limit: 10 });
         const categoriesChildren: TNavigationChildren = data.map((category) => {
@@ -52,15 +52,21 @@ const router = createBrowserRouter([
         console.error(e);
         return navigation;
       }
-    }
-  },
-  {
-    path: '/login',
-    element: <LoginPage />
-  },
-  {
-    path: '/signup',
-    element: <SignupPage />
+    },
+    children: [
+      {
+        index: true,
+        element: <App />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />
+      }
+    ]
   }
 ]);
 
