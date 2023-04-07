@@ -15,6 +15,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
+    "@loadable/component": "^5.15.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
@@ -33,6 +34,7 @@
     "@types/axios": "^0.14.0",
     "@types/chai": "^4.3.4",
     "@types/jquery": "^3.5.16",
+    "@types/loadable__component": "^5.13.4",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.56.0",

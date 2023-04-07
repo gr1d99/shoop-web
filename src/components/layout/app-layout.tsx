@@ -3,29 +3,15 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { useAuth } from '../../contexts/auth-context';
-import { type TNavigationItems } from '../nav/types';
+import { type TNavigation } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
-import { utils } from '../../utils';
 import { ProfileDropdown } from '../nav/profile-dropdown';
-
-const navigation: TNavigationItems = [
-  { name: 'Home', href: '/', icon: null, current: true, children: [] },
-  {
-    name: 'Categories',
-    href: '/categories',
-    icon: null,
-    current: false,
-    children: [
-      { name: 'Electronics', href: '/categories/electronics', current: true },
-      { name: 'Clothes', href: '/categories/clothes', current: false }
-    ]
-  }
-];
-
-const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
-  const { children } = props;
+import { useLoaderData, Outlet } from 'react-router-dom';
+import { NavLink } from '../links';
+const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authenticated, signOutUser, username } = useAuth();
+  const navigation = useLoaderData() as TNavigation;
 
   return (
     <div className="h-full">
@@ -81,31 +67,18 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          {navigation.map((item) => (
-                            <li key={item.name}>
-                              <a
-                                href={item.href}
-                                className={utils.classNames(
-                                  item.current
-                                    ? 'bg-gray-50 text-indigo-600'
-                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                                  'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                                )}>
-                                {item.icon === null ? null : (
-                                  <item.icon
-                                    className={utils.classNames(
-                                      item.current
-                                        ? 'text-indigo-600'
-                                        : 'text-gray-400 group-hover:text-indigo-600',
-                                      'h-6 w-6 shrink-0'
-                                    )}
-                                    aria-hidden="true"
-                                  />
+                          {Object.keys(navigation).map((key) => {
+                            const item = navigation[key as keyof TNavigation];
+                            return (
+                              <li key={key}>
+                                {item.children.length === 0 ? (
+                                  <NavLink item={item} />
+                                ) : (
+                                  <SidebarChildren item={item} />
                                 )}
-                                {item.name}
-                              </a>
-                            </li>
-                          ))}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </li>
                       <li className="mt-auto">
@@ -135,35 +108,18 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => (
-                    <li key={item.name}>
-                      {item.children.length === 0 ? (
-                        <a
-                          href={item.href}
-                          className={utils.classNames(
-                            item.current
-                              ? 'bg-gray-50 text-indigo-600'
-                              : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                          )}>
-                          {item.icon !== null ? (
-                            <item.icon
-                              className={utils.classNames(
-                                item.current
-                                  ? 'text-indigo-600'
-                                  : 'text-gray-400 group-hover:text-indigo-600',
-                                'h-6 w-6 shrink-0'
-                              )}
-                              aria-hidden="true"
-                            />
-                          ) : null}
-                          {item.name}
-                        </a>
-                      ) : (
-                        <SidebarChildren item={item} />
-                      )}
-                    </li>
-                  ))}
+                  {Object.keys(navigation).map((key) => {
+                    const item = navigation[key as keyof TNavigation];
+                    return (
+                      <li key={key}>
+                        {item.children.length === 0 ? (
+                          <NavLink item={item} />
+                        ) : (
+                          <SidebarChildren item={item} />
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </li>
               <li className="mt-auto">
@@ -226,7 +182,9 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
         </div>
 
         <main className="py-10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

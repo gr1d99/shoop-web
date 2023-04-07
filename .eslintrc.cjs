@@ -32,7 +32,8 @@ module.exports = {
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/explicit-function-return-type": "warn",
         "@typescript-eslint/no-var-requires": "warn",
-        "@typescript-eslint/method-signature-style": "off"
+        "@typescript-eslint/method-signature-style": "off",
+        "@typescript-eslint/strict-boolean-expressions": "warn"
       }
     }
   ],
