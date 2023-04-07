@@ -1,4 +1,6 @@
-type DataAttribute = Record<string, string | number> & { slug?: string; name: string };
+import { type ResourcesDataMeta } from '../../types';
+
+type DataAttributes = Record<string, string | number> & { slug?: string; name: string };
 interface DataRelationships {
   products: {
     data: Array<{
@@ -10,18 +12,11 @@ interface DataRelationships {
 interface Data {
   readonly id: string;
   type: string;
-  attributes: DataAttribute;
+  attributes: DataAttributes;
   relationships: DataRelationships;
 }
 
-interface DataMeta {
-  count: number;
-  next_page: number;
-  previous_page: number;
-  total: number;
-  total_pages: number;
-}
 export interface CategoriesResponse {
   data: Data[];
-  meta: DataMeta;
+  meta: ResourcesDataMeta;
 }

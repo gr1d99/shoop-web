@@ -2,6 +2,7 @@ import { Disclosure } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { type TNavigationItem } from './types';
+import { Link } from 'react-router-dom';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -33,8 +34,8 @@ const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
               <li key={subItem.name}>
                 {/* 44px */}
                 <Disclosure.Button
-                  as="a"
-                  href={subItem.href}
+                  as={Link}
+                  to={subItem.href}
                   className={classNames(
                     subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50',
                     'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 font-normal'

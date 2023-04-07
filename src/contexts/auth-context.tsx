@@ -48,7 +48,7 @@ type Action =
     }
   | {
       type: 'AUTHENTICATE';
-      payload: string;
+      payload: string | null;
     };
 
 const initialState: InitialState = {
@@ -97,7 +97,7 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
 
     case 'AUTHENTICATE': {
       const result = authenticate(payload);
-      return { ...state, ...result };
+      return { ...state, ...result, loading: false };
     }
 
     default: {
@@ -117,7 +117,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     },
     mutationKey: 'login'
   });
-  const { mutate, data, error, isError, isSuccess } = mutation;
+  const { mutate, data, error, isError, isSuccess, reset } = mutation;
 
   const boot = React.useRef(false);
 
@@ -125,9 +125,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     await localforage
       .getItem<string>(jwtKey)
       .then((value) => {
-        if (typeof value === 'string') {
-          localDispatch({ type: 'AUTHENTICATE', payload: value });
-        }
+        localDispatch({ type: 'AUTHENTICATE', payload: value });
       })
       .catch((err) => {
         console.log(err);
@@ -142,10 +140,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
   }, [boot.current]);
 
   React.useEffect(() => {
-    if (boot.current && isLoginMatch && state.authenticated) {
+    if (boot.current && isLoginMatch && state.authenticated && !state.loading) {
       navigate('/');
     }
-  }, [boot.current, isLoginMatch, state.authenticated]);
+  }, [boot.current, isLoginMatch, state.authenticated, state.loading]);
 
   React.useEffect(() => {
     if (isError) {
@@ -168,6 +166,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
         .then(restoreAuthFromStore)
         .then(() => {
           navigate('/');
+          reset();
         })
         .catch((err) => {
           console.error(err);
@@ -175,6 +174,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     }
   }, [isSuccess, state.authenticated]);
   const signInUser: IAuthContext['signInUser'] = (values, setSubmitting) => {
+    localDispatch({ type: 'SET_LOADING', payload: true });
     mutate(values, {
       onSettled: () => {
         setSubmitting(false);
@@ -183,6 +183,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
   };
 
   const signOutUser = async () => {
+    localDispatch({ type: 'SET_LOADING', payload: true });
     await localforage
       .removeItem(jwtKey)
       .then(restoreAuthFromStore)
