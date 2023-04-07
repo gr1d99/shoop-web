@@ -27,6 +27,16 @@ const api = {
       .catch(async (error) => {
         return await Promise.reject(error);
       });
+  },
+  async getOne<Response>(url: string, params: object = {}, headers: Partial<ApiHeaders> = {}) {
+    return await axiosInstance
+      .get<Response>(url, { params: { ...params }, headers: { ...headers } })
+      .then(async ({ data }) => {
+        return data;
+      })
+      .catch(async (error) => {
+        return await Promise.reject(error);
+      });
   }
 };
 

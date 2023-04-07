@@ -8,4 +8,10 @@ export interface Props extends React.ComponentPropsWithoutRef<'button'> {
   icon?: null | undefined | typeof HeroIcon;
   label: string;
   type: 'button' | 'submit';
+  rounded?: boolean;
+}
+
+export interface AddToCartBtnProps
+  extends Omit<React.ComponentPropsWithoutRef<'button'>, 'children'> {
+  label: string;
 }

@@ -3,7 +3,7 @@ import './utils/wdyr';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import router from './router';
+import index from './router';
 import RootLoader from './components/loaders';
 import ReactQueryProvider from './contexts/react-query-context';
 import { Toaster } from 'react-hot-toast';
@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           }
         }}
       />
-      <RouterProvider router={router} fallbackElement={<RootLoader />} />
+      <RouterProvider router={index} fallbackElement={<RootLoader />} />
     </ReactQueryProvider>
     <Analytics />
   </React.StrictMode>
