@@ -36,10 +36,10 @@ describe('Login Page', () => {
       .should('have.text', 'Successfully authenticated!');
   });
 
-  // it('submits form and render error message from server', () => {
-  //   cy.login('test@user.com', 'testpasswords');
-  //   cy.url().should('equal', 'http://localhost:5173/login');
-  //   cy.get('[data-cy="toast-error-0"]').should('have.text', 'Incorrect email or password');
-  //   // cy.get('[data-cy="toast-error-0"]').should('have.text', 'Incorrect email or password');
-  // });
+  it('submits form and render error message from server', () => {
+    cy.login('test@user.com', 'testpasswords');
+    cy.url().should('equal', 'http://localhost:5173/login');
+    cy.get('[data-cy="toast-error-0"]').should('have.text', 'Incorrect email or password');
+    cy.get('[data-cy="toast-error-0"]').should('have.text', 'Incorrect email or password');
+  });
 });

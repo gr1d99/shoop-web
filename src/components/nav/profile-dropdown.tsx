@@ -13,8 +13,14 @@ const ProfileDropdown = ({
   signOutUser: () => Promise<void>;
   username: string;
 }): JSX.Element => {
-  const navigation: Array<{ name: string; isLink: boolean; href?: string; action: () => any }> = [
-    { name: 'Sign Out', isLink: false, href: '', action: signOutUser }
+  const navigation: Array<{
+    name: string;
+    isLink: boolean;
+    href?: string;
+    action: () => any;
+    'data-cy': string;
+  }> = [
+    { name: 'Sign Out', isLink: false, href: '', action: signOutUser, 'data-cy': 'logout-btn' }
   ];
   return (
     <>
