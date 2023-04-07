@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '../../components/cards';
-import { withAppLayout } from '../../components/layout';
 import { SignupForm } from './components/form';
 import {
   type FormValues,
@@ -75,4 +74,4 @@ if (import.meta.env.DEV) {
   SignupPage.whyDidYouRender = true;
 }
 
-export default withAppLayout(SignupPage);
+export default SignupPage;

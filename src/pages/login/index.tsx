@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '../../components/cards';
-import { withAppLayout } from '../../components/layout';
 import { useAuth } from '../../contexts/auth-context';
 import { LoginForm } from './components/form';
 import { type LoginFormProps } from './types';
@@ -24,4 +23,4 @@ if (import.meta.env.DEV) {
   LoginPage.whyDidYouRender = true;
 }
 
-export default withAppLayout(LoginPage);
+export default LoginPage;
