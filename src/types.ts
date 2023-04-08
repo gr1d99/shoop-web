@@ -13,6 +13,7 @@ export type ProductRequestParams = RequestParams & {
 export interface Image {
   name: string;
   alt: string;
+  url: string;
 }
 
 export type ResourceMeta = Record<string, any> | null;
@@ -35,7 +36,7 @@ export interface Resource<Attributes, Relationships> {
   data: ResourceData<Attributes, Relationships>;
 }
 
-type ResourcesData<Attributes, Relationships> = Resource<Attributes, Relationships>['data'];
+export type ResourcesData<Attributes, Relationships> = Resource<Attributes, Relationships>['data'];
 export interface Resources<Attributes, Relationships> {
   data: Array<ResourcesData<Attributes, Relationships>>;
   meta: ResourceMeta;

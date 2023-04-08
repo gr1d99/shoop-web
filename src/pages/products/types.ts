@@ -1,6 +1,6 @@
 import { type Image, type ResourceMeta, type Resources } from '../../types';
 
-interface Product {
+export interface Product {
   readonly id: number;
   slug: string;
   name: string;
