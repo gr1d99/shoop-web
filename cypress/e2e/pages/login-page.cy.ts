@@ -52,7 +52,7 @@ describe('Login Page', () => {
     });
 
     it('navigates to login page', () => {
-      cy.get('[data-cy="header"]').should('have.text', 'Sign in to your account');
+      cy.dataCy('header').should('have.text', 'Sign in to your account');
     });
   });
 });

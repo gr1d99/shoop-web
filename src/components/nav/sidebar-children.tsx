@@ -7,7 +7,13 @@ import { Link } from 'react-router-dom';
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
-const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
+const SidebarChildren = ({
+  item,
+  hideSidebar
+}: {
+  item: TNavigationItem;
+  hideSidebar: () => void;
+}): JSX.Element => {
   const { dataCy } = item;
   return (
     <Disclosure as="div">
@@ -39,6 +45,7 @@ const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
                   as={Link}
                   to={subItem.href}
                   data-cy={subItem.dataCy}
+                  onClick={hideSidebar}
                   className={classNames(
                     subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50',
                     'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 font-normal'
