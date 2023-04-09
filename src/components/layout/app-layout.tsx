@@ -9,16 +9,18 @@ import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
 import { useLoaderData, Outlet, Link } from 'react-router-dom';
 import { NavLink } from '../links';
+
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authenticated, signOutUser, username } = useAuth();
   const navigation = useLoaderData() as TNavigation;
-  const hideSidebar = () => {
+
+  const hideSidebar = (): void => {
     setSidebarOpen(false);
   };
 
   return (
-    <div className="h-full">
+    <div className="relative h-full">
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
           <Transition.Child
@@ -127,7 +129,7 @@ const AppLayout = (): JSX.Element => {
                 </ul>
               </li>
               <li className="mt-auto">
-                {/* Profile dropdown */}
+                Profile dropdown
                 <ProfileDropdown
                   hideSidebar={hideSidebar}
                   authenticated={authenticated}
@@ -188,7 +190,7 @@ const AppLayout = (): JSX.Element => {
           </div>
         </div>
 
-        <main className="py-10">
+        <main className="relative py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Outlet />
           </div>
