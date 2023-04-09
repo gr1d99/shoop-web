@@ -5,16 +5,26 @@ import { fetchProducts } from '../pages/products/api/products';
 import { type ProductRequestParams } from '../types';
 import api from '../api';
 import { type CategoryProductsLoader, type CategoryResponse } from './types';
+import { type ProductResponse } from '../pages/products/types';
 
 const navigation: TNavigation = {
-  Home: { isButton: false, name: 'Home', href: '/', icon: null, current: true, children: [] },
+  Home: {
+    isButton: false,
+    name: 'Home',
+    href: '/',
+    icon: null,
+    current: true,
+    children: [],
+    dataCy: 'home-nav'
+  },
   Categories: {
     isButton: true,
     name: 'Categories',
     href: '#',
     icon: null,
     current: false,
-    children: []
+    children: [],
+    dataCy: 'category-nav'
   }
 };
 const rootLoader = async (_args: LoaderFunctionArgs) => {
@@ -29,7 +39,8 @@ const rootLoader = async (_args: LoaderFunctionArgs) => {
         id,
         name,
         href,
-        current: false
+        current: false,
+        dataCy: `${name}-nav-item`
       };
     });
     return {
@@ -57,7 +68,20 @@ const categoriesProductsLoader = async (
   }
 };
 
+const productLoader = async (args: LoaderFunctionArgs): Promise<CategoryProductsLoader | any> => {
+  const { params } = args;
+  const { productSlug } = params as { productSlug: string };
+  try {
+    const product = await api.getOne<ProductResponse>(`/products/${productSlug}`);
+    console.log(product);
+    return product.data;
+  } catch (e) {
+    return e;
+  }
+};
+
 export const routerLoaders = {
   rootLoader,
+  productLoader,
   categoriesProductsLoader
 };

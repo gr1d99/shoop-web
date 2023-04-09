@@ -2,6 +2,7 @@ import localforage from 'localforage';
 
 describe('Logout', () => {
   beforeEach(() => {
+    cy.viewport('macbook-13');
     cy.visit('/');
     void localforage.clear();
     cy.reload();
