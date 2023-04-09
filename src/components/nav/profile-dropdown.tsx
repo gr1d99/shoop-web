@@ -15,7 +15,7 @@ const ProfileDropdown = ({
   signOutUser: () => Promise<void>;
   username: string;
   hideSidebar: () => void;
-  target?: 'mobile' | 'desktop';
+  target: 'mobile' | 'desktop';
 }): JSX.Element => {
   const navigation: Array<{
     name: string;
@@ -26,11 +26,18 @@ const ProfileDropdown = ({
   }> = [
     { name: 'Sign Out', isLink: false, href: '', action: signOutUser, 'data-cy': 'logout-btn' }
   ];
+  const handleLogout = (cbk: () => void): void => {
+    hideSidebar();
+    cbk();
+  };
+
   return (
     <>
       {authenticated ? (
         <Menu as="div" className="relative">
-          <Menu.Button className="-m-1.5 flex items-center p-1.5">
+          <Menu.Button
+            className="-m-1.5 flex items-center p-1.5"
+            data-cy={`user-profile-dropdown-${target}`}>
             <span className="sr-only">Open user menu</span>
             <img
               className="h-8 w-8 rounded-full bg-gray-50"
@@ -75,7 +82,14 @@ const ProfileDropdown = ({
                             active ? 'bg-gray-50' : '',
                             'block px-3 py-1 text-sm leading-6 text-gray-900'
                           )}
-                          onClick={item.action}>
+                          onClick={() => {
+                            if (item.name === 'Sign Out') {
+                              handleLogout(item.action);
+                            } else {
+                              item.action();
+                            }
+                          }}
+                          data-cy={item['data-cy']}>
                           {item.name}
                         </button>
                       )}

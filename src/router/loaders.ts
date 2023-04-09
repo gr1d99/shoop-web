@@ -73,7 +73,6 @@ const productLoader = async (args: LoaderFunctionArgs): Promise<CategoryProducts
   const { productSlug } = params as { productSlug: string };
   try {
     const product = await api.getOne<ProductResponse>(`/products/${productSlug}`);
-    console.log(product);
     return product.data;
   } catch (e) {
     return e;

@@ -3,6 +3,7 @@ import { type Image } from '../../types';
 import { Link } from 'react-router-dom';
 
 const ProductImage = ({ image, slug }: { image: Image | undefined; slug: string }) => {
+  console.log(image);
   let imageName = '';
   let imageAlt = '';
   let imageUrl = 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-01.jpg';

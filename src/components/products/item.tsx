@@ -3,8 +3,9 @@ import React from 'react';
 import { type ResourcesData } from '../../types';
 import { type Product } from '../../pages/products/types';
 import { ProductImage } from './image';
-import { ProductReview } from './review';
+import { ProductRatings } from './ratings';
 import { Link } from 'react-router-dom';
+import { ProductReviews } from './reviews';
 
 const ProductItem = ({
   product
@@ -20,7 +21,7 @@ const ProductItem = ({
       <div className="mt-3 flex w-full flex-col items-start space-y-2">
         <div className="flex w-full items-center justify-between">
           <div className="">
-            <p className="text-base font-bold text-gray-900" data-cy="product-price">
+            <p className="text-sm font-bold text-gray-900" data-cy="product-price">
               KSH 100
             </p>
           </div>
@@ -36,7 +37,8 @@ const ProductItem = ({
             </Link>
           </h3>
           <div className="flex flex-col items-start space-y-2">
-            <ProductReview />
+            <ProductRatings />
+            <ProductReviews />
             <div className="w-full md:hidden">
               <AddToCartButton label={'Add'} data-cy="add-to-cart-btn" />
             </div>

@@ -11,6 +11,7 @@ export type ProductRequestParams = RequestParams & {
 };
 
 export interface Image {
+  readonly id: number;
   name: string;
   alt: string;
   url: string;
