@@ -1,12 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { useAuth } from '../../contexts/auth-context';
 import { type TNavigation } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
-import { useLoaderData, Outlet } from 'react-router-dom';
+import { useLoaderData, Outlet, Link } from 'react-router-dom';
 import { NavLink } from '../links';
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -60,9 +61,9 @@ const AppLayout = (): JSX.Element => {
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-                  <div className="flex h-16 shrink-0 items-center">
-                    <ShoppingBagIcon className="h-6 w-6" />
-                  </div>
+                  <Link to={'/'} className="flex h-16 w-fit shrink-0 items-center">
+                    <ShoppingBagIcon className="h-6 w-6 text-indigo-600" />
+                  </Link>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
@@ -81,11 +82,13 @@ const AppLayout = (): JSX.Element => {
                           })}
                         </ul>
                       </li>
-                      <li className="mt-auto">
+                      <li className="mt-auto lg:hidden">
                         <ProfileDropdown
+                          setSidebarOpen={setSidebarOpen}
                           authenticated={authenticated}
                           signOutUser={signOutUser}
                           username={username}
+                          target={'mobile'}
                         />
                       </li>
                     </ul>
@@ -101,9 +104,9 @@ const AppLayout = (): JSX.Element => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
-            <ShoppingBagIcon className="h-6 w-6" />
-          </div>
+          <Link to="/" className="flex h-16 w-fit shrink-0 items-center">
+            <ShoppingBagIcon className="h-6 w-6 text-indigo-600" />
+          </Link>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -125,9 +128,11 @@ const AppLayout = (): JSX.Element => {
               <li className="mt-auto">
                 {/* Profile dropdown */}
                 <ProfileDropdown
+                  setSidebarOpen={setSidebarOpen}
                   authenticated={authenticated}
                   signOutUser={signOutUser}
                   username={username}
+                  target={'desktop'}
                 />
               </li>
             </ul>
@@ -143,7 +148,8 @@ const AppLayout = (): JSX.Element => {
               className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
               onClick={() => {
                 setSidebarOpen(true);
-              }}>
+              }}
+              data-cy="navigation-menu">
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>

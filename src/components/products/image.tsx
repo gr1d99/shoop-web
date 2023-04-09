@@ -1,7 +1,8 @@
 import React from 'react';
 import { type Image } from '../../types';
+import { Link } from 'react-router-dom';
 
-const ProductImage = ({ image }: { image: Image | undefined }) => {
+const ProductImage = ({ image, slug }: { image: Image | undefined; slug: string }) => {
   let imageName = '';
   let imageAlt = '';
   let imageUrl = 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-01.jpg';
@@ -13,12 +14,15 @@ const ProductImage = ({ image }: { image: Image | undefined }) => {
   }
   return (
     <div className="aspect-square overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-      <img
-        title={imageName}
-        src={imageUrl}
-        alt={imageAlt}
-        className="h-full w-full object-cover object-center"
-      />
+      <Link to={`/product/${slug}`}>
+        <img
+          title={imageName}
+          src={imageUrl}
+          alt={imageAlt}
+          className="h-full w-full object-cover object-center"
+          data-cy="product-image"
+        />
+      </Link>
     </div>
   );
 };

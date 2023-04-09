@@ -3,7 +3,7 @@ import React from 'react';
 import { type TNavigationItem } from '../nav/types';
 
 const NavLink = ({ item }: { item: TNavigationItem }): JSX.Element => {
-  const { isButton } = item;
+  const { isButton, dataCy } = item;
   return (
     <>
       {isButton ? (
@@ -13,7 +13,8 @@ const NavLink = ({ item }: { item: TNavigationItem }): JSX.Element => {
               ? 'bg-gray-50 text-indigo-600'
               : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-          )}>
+          )}
+          data-cy={dataCy}>
           {item.icon !== null ? (
             <item.icon
               className={utils.classNames(
@@ -33,7 +34,8 @@ const NavLink = ({ item }: { item: TNavigationItem }): JSX.Element => {
               ? 'bg-gray-50 text-indigo-600'
               : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-          )}>
+          )}
+          data-cy={dataCy}>
           {item.icon !== null ? (
             <item.icon
               className={utils.classNames(
