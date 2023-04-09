@@ -2,25 +2,26 @@ import { StarIcon } from '@heroicons/react/24/solid';
 import { utils } from '../../utils';
 import React from 'react';
 
-const ProductReview = () => {
+const ProductRatings = () => {
+  const rating = 3;
   return (
-    <>
-      <p className="sr-only">{3} out of 5 stars</p>
-      <div className="flex items-start">
+    <div>
+      <p className="sr-only">{rating} out of 5 stars</p>
+      <div className="flex items-center">
         {[0, 1, 2, 3, 4].map((rating) => (
           <StarIcon
             key={rating}
             className={utils.classNames(
               rating < 3 ? 'text-yellow-400' : 'text-gray-200',
-              'h-5 w-5 flex-shrink-0'
+              'h-4 w-4 flex-shrink-0 text-sm'
             )}
             aria-hidden="true"
           />
-        ))}
+        ))}{' '}
+        <span className="text-sm antialiased">({rating})</span>
       </div>
-      <p className="mt-1 text-sm text-gray-500">{10} reviews</p>
-    </>
+    </div>
   );
 };
 
-export { ProductReview };
+export { ProductRatings };
