@@ -5,7 +5,7 @@ import React, { Fragment } from 'react';
 import { utils } from '../../utils';
 
 const ProfileDropdown = ({
-  setSidebarOpen,
+  hideSidebar,
   authenticated,
   signOutUser,
   username,
@@ -14,7 +14,7 @@ const ProfileDropdown = ({
   authenticated: boolean;
   signOutUser: () => Promise<void>;
   username: string;
-  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  hideSidebar: () => void;
   target?: 'mobile' | 'desktop';
 }): JSX.Element => {
   const navigation: Array<{
@@ -87,7 +87,7 @@ const ProfileDropdown = ({
           </Transition>
         </Menu>
       ) : (
-        <LoginLabel setSidebarOpen={setSidebarOpen} target={target} />
+        <LoginLabel hideSidebar={hideSidebar} target={target} />
       )}
     </>
   );

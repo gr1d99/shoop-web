@@ -13,6 +13,9 @@ const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authenticated, signOutUser, username } = useAuth();
   const navigation = useLoaderData() as TNavigation;
+  const hideSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   return (
     <div className="h-full">
@@ -48,12 +51,7 @@ const AppLayout = (): JSX.Element => {
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0">
                   <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                    <button
-                      type="button"
-                      className="-m-2.5 p-2.5"
-                      onClick={() => {
-                        setSidebarOpen(false);
-                      }}>
+                    <button type="button" className="-m-2.5 p-2.5" onClick={hideSidebar}>
                       <span className="sr-only">Close sidebar</span>
                       <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                     </button>
@@ -61,10 +59,13 @@ const AppLayout = (): JSX.Element => {
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-                  <Link to={'/'} className="flex h-16 w-fit shrink-0 items-center">
+                  <Link
+                    to={'/'}
+                    className="flex h-16 w-fit shrink-0 items-center"
+                    data-cy="app-logo">
                     <ShoppingBagIcon className="h-6 w-6 text-indigo-600" />
                   </Link>
-                  <nav className="flex flex-1 flex-col">
+                  <nav className="flex flex-1 flex-col" data-cy="mobile-nav">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
@@ -75,7 +76,7 @@ const AppLayout = (): JSX.Element => {
                                 {item.children.length === 0 ? (
                                   <NavLink item={item} />
                                 ) : (
-                                  <SidebarChildren item={item} />
+                                  <SidebarChildren item={item} hideSidebar={hideSidebar} />
                                 )}
                               </li>
                             );
@@ -84,7 +85,7 @@ const AppLayout = (): JSX.Element => {
                       </li>
                       <li className="mt-auto lg:hidden">
                         <ProfileDropdown
-                          setSidebarOpen={setSidebarOpen}
+                          hideSidebar={hideSidebar}
                           authenticated={authenticated}
                           signOutUser={signOutUser}
                           username={username}
@@ -104,7 +105,7 @@ const AppLayout = (): JSX.Element => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-          <Link to="/" className="flex h-16 w-fit shrink-0 items-center">
+          <Link to="/" className="flex h-16 w-fit shrink-0 items-center" data-cy="app-logo">
             <ShoppingBagIcon className="h-6 w-6 text-indigo-600" />
           </Link>
           <nav className="flex flex-1 flex-col">
@@ -118,7 +119,7 @@ const AppLayout = (): JSX.Element => {
                         {item.children.length === 0 ? (
                           <NavLink item={item} />
                         ) : (
-                          <SidebarChildren item={item} />
+                          <SidebarChildren item={item} hideSidebar={hideSidebar} />
                         )}
                       </li>
                     );
@@ -128,7 +129,7 @@ const AppLayout = (): JSX.Element => {
               <li className="mt-auto">
                 {/* Profile dropdown */}
                 <ProfileDropdown
-                  setSidebarOpen={setSidebarOpen}
+                  hideSidebar={hideSidebar}
                   authenticated={authenticated}
                   signOutUser={signOutUser}
                   username={username}
