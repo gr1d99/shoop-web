@@ -5,13 +5,17 @@ import React, { Fragment } from 'react';
 import { utils } from '../../utils';
 
 const ProfileDropdown = ({
+  setSidebarOpen,
   authenticated,
   signOutUser,
-  username
+  username,
+  target
 }: {
   authenticated: boolean;
   signOutUser: () => Promise<void>;
   username: string;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  target?: 'mobile' | 'desktop';
 }): JSX.Element => {
   const navigation: Array<{
     name: string;
@@ -83,10 +87,14 @@ const ProfileDropdown = ({
           </Transition>
         </Menu>
       ) : (
-        <LoginLabel />
+        <LoginLabel setSidebarOpen={setSidebarOpen} target={target} />
       )}
     </>
   );
+};
+
+ProfileDropdown.defaultProps = {
+  target: 'desktop'
 };
 
 export { ProfileDropdown };

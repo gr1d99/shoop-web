@@ -5,6 +5,7 @@ export interface TNavigationChild {
   name: string;
   href: string;
   current: boolean;
+  dataCy: string;
 }
 export type TNavigationChildren = TNavigationChild[];
 export interface TNavigationItem {
@@ -14,6 +15,7 @@ export interface TNavigationItem {
   icon: null | typeof HeroIcon;
   current: TNavigationChild['current'];
   children: TNavigationChildren | [];
+  dataCy: string;
 }
 export interface TNavigation {
   Home: TNavigationItem;

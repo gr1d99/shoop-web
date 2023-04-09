@@ -12,6 +12,7 @@ const SignupPage = loadable(
 const App = loadable(async (/* webpackChunkName: "Home Page" */) => await import('../app'));
 const AppLayout = loadable(async () => await import('../components/layout'));
 const ProductsPage = loadable(async () => await import('../pages/products'));
+const ProductPage = loadable(async () => await import('../pages/product'));
 
 const index = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ const index = createBrowserRouter([
         path: 'category/:categorySlug',
         element: <ProductsPage />,
         loader: routerLoaders.categoriesProductsLoader
+      },
+      {
+        path: 'product/:productSlug',
+        element: <ProductPage />,
+        loader: routerLoaders.productLoader
       }
     ]
   }

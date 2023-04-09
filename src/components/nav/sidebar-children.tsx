@@ -8,6 +8,7 @@ function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
 const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
+  const { dataCy } = item;
   return (
     <Disclosure as="div">
       {({ open }) => (
@@ -16,7 +17,8 @@ const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
             className={classNames(
               item.current ? 'bg-gray-50' : 'hover:bg-gray-50',
               'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700'
-            )}>
+            )}
+            data-cy={dataCy}>
             {item.icon !== null ? (
               <item.icon className="h-6 w-6 shrink-0 text-gray-400" aria-hidden="true" />
             ) : null}
@@ -29,13 +31,14 @@ const SidebarChildren = ({ item }: { item: TNavigationItem }): JSX.Element => {
               aria-hidden="true"
             />
           </Disclosure.Button>
-          <Disclosure.Panel as="ul" className="mt-1 px-2">
+          <Disclosure.Panel as="ul" className="mt-1 px-2" data-cy="nav-items">
             {item.children.map((subItem) => (
               <li key={subItem.name}>
                 {/* 44px */}
                 <Disclosure.Button
                   as={Link}
                   to={subItem.href}
+                  data-cy={subItem.dataCy}
                   className={classNames(
                     subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50',
                     'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 font-normal'

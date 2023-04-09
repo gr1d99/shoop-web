@@ -9,6 +9,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'button'> {
   label: string;
   type: 'button' | 'submit';
   rounded?: boolean;
+  'data-cy': string;
 }
 
 export interface AddToCartBtnProps
