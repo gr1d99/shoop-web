@@ -129,7 +129,6 @@ const AppLayout = (): JSX.Element => {
                 </ul>
               </li>
               <li className="mt-auto">
-                Profile dropdown
                 <ProfileDropdown
                   hideSidebar={hideSidebar}
                   authenticated={authenticated}
