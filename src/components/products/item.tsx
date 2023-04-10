@@ -16,7 +16,7 @@ const ProductItem = ({
   const { name, images, slug } = attributes;
   const [image] = images;
   return (
-    <>
+    <div>
       <ProductImage slug={slug} image={image} />
       <div className="mt-3 flex w-full flex-col items-start space-y-2">
         <div className="flex w-full items-center justify-between">
@@ -45,7 +45,7 @@ const ProductItem = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
