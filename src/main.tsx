@@ -9,23 +9,26 @@ import ReactQueryProvider from './contexts/react-query-context';
 import { Toaster } from 'react-hot-toast';
 import { Analytics } from '@vercel/analytics/react';
 import './index.css';
+import ErrorBoundary from './components/error-boundary';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ReactQueryProvider>
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: '#fff',
-            color: '#000',
-            borderRadius: 0
-          }
-        }}
-      />
-      <RouterProvider router={index} fallbackElement={<RootLoader />} />
-    </ReactQueryProvider>
-    <Analytics />
+    <ErrorBoundary>
+      <ReactQueryProvider>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 10000,
+            style: {
+              background: '#fff',
+              color: '#000',
+              borderRadius: 0
+            }
+          }}
+        />
+        <RouterProvider router={index} fallbackElement={<RootLoader />} />
+      </ReactQueryProvider>
+      <Analytics />
+    </ErrorBoundary>
   </React.StrictMode>
 );
