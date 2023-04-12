@@ -12,13 +12,16 @@ import { ProductPrice } from './components/price';
 import { ProductTags } from './components/tags';
 import { ProductMeta } from './components/meta';
 import { AddToCartButton } from '../../components/button';
+import { isAxiosError } from 'axios';
+import type { AxiosError } from 'axios';
+import { resolveError, withErrorBoundary } from '../../components/errors';
 
 const ProductPage = (): JSX.Element => {
-  const product = useLoaderData() as ProductResponse['data'] | undefined;
-
-  if (product == null) {
-    return <>Product Not Found</>;
+  const product = useLoaderData() as ProductResponse['data'] | AxiosError;
+  if (isAxiosError(product)) {
+    return resolveError(product);
   }
+  
   const products = Array.from([
     product,
     product,
@@ -204,4 +207,4 @@ const ProductPage = (): JSX.Element => {
   );
 };
 
-export default ProductPage;
+export default withErrorBoundary(ProductPage);
