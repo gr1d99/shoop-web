@@ -9,6 +9,8 @@ import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
 import { useLoaderData, Outlet, Link } from 'react-router-dom';
 import { NavLink } from '../links';
+import { CartNav } from '../nav/cart-nav';
+import { VerticalSeparator } from '../separator/vertical';
 
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -181,9 +183,8 @@ const AppLayout = (): JSX.Element => {
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-
-                {/* Separator */}
-                <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
+                <VerticalSeparator />
+                <CartNav items={[1, 2]} />
               </div>
             </div>
           </div>

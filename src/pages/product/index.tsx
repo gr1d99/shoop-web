@@ -21,7 +21,7 @@ const ProductPage = (): JSX.Element => {
   if (isAxiosError(product)) {
     return resolveError(product);
   }
-  
+
   const products = Array.from([
     product,
     product,
