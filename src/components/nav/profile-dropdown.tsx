@@ -31,8 +31,6 @@ const ProfileDropdown = ({
     cbk();
   };
 
-  console.log({ user });
-
   return (
     <>
       {authenticated ? (
