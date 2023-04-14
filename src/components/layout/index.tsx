@@ -1,4 +1,4 @@
 import { AppLayout } from './app-layout';
-import { withAuthProvider } from '../../contexts/auth-context';
+import { withAuthProvider } from '../../utils/hocs/with-auth-provider';
 
 export default withAuthProvider(AppLayout);

@@ -14,4 +14,14 @@ describe('Product Page', () => {
       });
     });
   });
+
+  context('Mobile', () => {
+    beforeEach(() => {
+      cy.viewport(480, 1000);
+    });
+
+    it('increments cart items number', () => {
+      cy.dataCy('cart-items-count').should('have.text', 0);
+    });
+  });
 });

@@ -14,12 +14,13 @@ import { ProductMeta } from './components/meta';
 import { AddToCartButton } from '../../components/button';
 import { isAxiosError } from 'axios';
 import type { AxiosError } from 'axios';
-import { resolveError, withErrorBoundary } from '../../components/errors';
+import { withErrorBoundary } from '../../components/errors';
+import { utils } from '../../utils';
 
 const ProductPage = (): JSX.Element => {
   const product = useLoaderData() as ProductResponse['data'] | AxiosError;
   if (isAxiosError(product)) {
-    return resolveError(product);
+    return utils.errors.resolveResourceError(product);
   }
 
   const products = Array.from([

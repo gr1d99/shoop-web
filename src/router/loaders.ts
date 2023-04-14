@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs } from 'react-router-dom';
-import { fetchCategories } from '../pages/home/api/categories';
+import { fetchCategories } from '../queries/categories';
 import { type TNavigation, type TNavigationChildren } from '../components/nav/types';
-import { fetchProducts } from '../pages/products/api/products';
+import { fetchProducts } from '../queries/products';
 import { type ProductRequestParams } from '../types';
 import api from '../api';
 import { type CategoryProductsLoader, type CategoryResponse } from './types';

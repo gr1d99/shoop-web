@@ -1,3 +1,5 @@
+import { type AxiosError } from 'axios';
+
 const buildServerFormErrors = (errors: Record<string, string[]>) => {
   return Object.keys(errors).reduce<string[]>((acc, key) => {
     const keyErrors = errors[key];
@@ -9,6 +11,11 @@ const buildServerFormErrors = (errors: Record<string, string[]>) => {
   }, []);
 };
 
+const resolveResourceError = (error: AxiosError | Error) => {
+  throw error;
+};
+
 export const errors = {
-  buildServerFormErrors
+  buildServerFormErrors,
+  resolveResourceError
 };

@@ -4,10 +4,6 @@ import { type AxiosError } from 'axios';
 import React from 'react';
 import ErrorBoundary from '../error-boundary';
 
-const resolveError = (error: AxiosError | Error) => {
-  throw error;
-};
-
 const withErrorBoundary = <P,>(Component: React.FC<P>) => {
   type Props = React.ComponentProps<any> & {
     fallback: React.ReactNode | null;
@@ -24,4 +20,4 @@ const withErrorBoundary = <P,>(Component: React.FC<P>) => {
   return WithErrorBoundary;
 };
 
-export { resolveError, withErrorBoundary };
+export { withErrorBoundary };
