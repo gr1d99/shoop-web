@@ -11,11 +11,14 @@ import { NavLink } from '../links';
 import { CartNav } from '../nav/cart-nav';
 import { VerticalSeparator } from '../separator/vertical';
 import { useAuth } from '../../utils/hooks/use-auth';
+import { useCurrentUser } from '../../utils/hooks/use-current-user';
 
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authenticated, signOutUser } = useAuth();
+  const { cart } = useCurrentUser();
   const navigation = useLoaderData() as TNavigation;
+  const cartItems = cart?.relationships?.items?.data ?? [];
 
   const hideSidebar = (): void => {
     setSidebarOpen(false);
@@ -182,7 +185,7 @@ const AppLayout = (): JSX.Element => {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
                 <VerticalSeparator />
-                <CartNav items={[]} />
+                <CartNav items={cartItems} />
               </div>
             </div>
           </div>

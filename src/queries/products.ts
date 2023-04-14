@@ -1,9 +1,8 @@
-import { type ProductRequestParams } from '../types';
+import { type ProductRequestParams, type ProductsResources } from '../types';
 import api from '../api';
-import { type ProductsResponse } from '../pages/products/types';
 
 const fetchProducts = async (params: ProductRequestParams) => {
-  return await api.getAll<ProductRequestParams, ProductsResponse>('/products', params);
+  return await api.getAll<ProductRequestParams, ProductsResources>('/products', params);
 };
 
 export { fetchProducts };

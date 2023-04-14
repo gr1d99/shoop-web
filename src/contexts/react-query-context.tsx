@@ -1,12 +1,12 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-// import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const client = new QueryClient();
 const isDev = import.meta.env.DEV;
 const ReactQueryProvider = (props: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_devToolsOpen, setDevToolsOpen] = React.useState(false);
+  const [devToolsOpen, setDevToolsOpen] = React.useState(false);
   const isMounted = React.useRef(false);
 
   React.useEffect(() => {
@@ -19,7 +19,7 @@ const ReactQueryProvider = (props: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={client}>
       {props.children}
-      {/* <ReactQueryDevtools initialIsOpen={devToolsOpen} /> */}
+      <ReactQueryDevtools initialIsOpen={devToolsOpen} />
     </QueryClientProvider>
   );
 };

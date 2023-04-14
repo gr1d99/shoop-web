@@ -1,20 +1,44 @@
 import { AddToCartButton } from '../button';
 import React from 'react';
-import { type ResourcesData } from '../../types';
-import { type Product } from '../../pages/products/types';
+import { type ProductResource } from '../../types';
 import { ProductImage } from './image';
 import { ProductRatings } from './ratings';
 import { Link } from 'react-router-dom';
 import { ProductReviews } from './reviews';
+import { type AddToCart } from '../../utils/hooks/use-add-to-cart';
 
+// const p: ProductResource = {
+//   data: {
+//     id: '2',
+//     type: 'p',
+//     attributes: {
+//       slug: '2',
+//       name: 'a',
+//       description: 'a',
+//       brand_id: 1,
+//       category_id: 2,
+//       meta: [],
+//       images: []
+//     },
+//     relationships: []
+//   }
+// };
 const ProductItem = ({
-  product
+  product,
+  handleAddToCart
 }: {
-  product: ResourcesData<Omit<Product, 'id'>, []>;
+  product: ProductResource['data'];
+  handleAddToCart: AddToCart['handleAddToCart'];
 }): JSX.Element => {
   const { attributes } = product;
-  const { name, images, slug } = attributes;
+  const { name, images, slug }: ProductResource['data']['attributes'] = attributes;
   const [image] = images;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const url = `/product/${slug}`;
+
+  const onAddToCart = (): void => {
+    handleAddToCart(product);
+  };
   return (
     <div>
       <ProductImage slug={slug} image={image} />
@@ -26,12 +50,12 @@ const ProductItem = ({
             </p>
           </div>
           <div className="hidden md:block">
-            <AddToCartButton label={'Add'} />
+            <AddToCartButton label={'Add'} onClick={onAddToCart} />
           </div>
         </div>
         <div className="">
           <h3 className="text-sm font-medium text-gray-900">
-            <Link to={`/product/${slug}`} data-cy="product-name">
+            <Link to={url} data-cy="product-name">
               <span aria-hidden="true" className="absolute" />
               {name}
             </Link>
@@ -40,7 +64,7 @@ const ProductItem = ({
             <ProductRatings />
             <ProductReviews />
             <div className="w-full md:hidden">
-              <AddToCartButton label={'Add'} data-cy="add-to-cart-btn" />
+              <AddToCartButton label={'Add'} data-cy="add-to-cart-btn" onClick={onAddToCart} />
             </div>
           </div>
         </div>

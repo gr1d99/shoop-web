@@ -1,9 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 import { Tab } from '@headlessui/react';
-import { type ProductResponse } from '../products/types';
 import { ProductRatings } from '../../components/products/ratings';
 import { ProductReviews } from '../../components/products/reviews';
-// import { AddToCartButton } from '../../components/button';
 import React from 'react';
 import { ProductItem } from '../../components/products/item';
 import { ProductTitle } from './components/title';
@@ -16,9 +14,12 @@ import { isAxiosError } from 'axios';
 import type { AxiosError } from 'axios';
 import { withErrorBoundary } from '../../components/errors';
 import { utils } from '../../utils';
+import { type ProductResource } from '../../types';
+import { useAddToCart } from '../../utils/hooks/use-add-to-cart';
 
 const ProductPage = (): JSX.Element => {
-  const product = useLoaderData() as ProductResponse['data'] | AxiosError;
+  const product = useLoaderData() as ProductResource['data'] | AxiosError;
+  const { handleAddToCart } = useAddToCart();
   if (isAxiosError(product)) {
     return utils.errors.resolveResourceError(product);
   }
@@ -93,7 +94,7 @@ const ProductPage = (): JSX.Element => {
             {products.map((product) => {
               return (
                 <div key={product.id} className="w-1/3 py-4">
-                  <ProductItem product={product} />
+                  <ProductItem product={product} handleAddToCart={handleAddToCart} />
                 </div>
               );
             })}
@@ -192,7 +193,9 @@ const ProductPage = (): JSX.Element => {
         <h2 className="py-2 font-bold antialiased"> Similar Items</h2>
         <div className="grid grid-cols-5 gap-x-4 gap-y-8 divide-gray-500">
           {products.map((product) => {
-            return <ProductItem key={product.id} product={product} />;
+            return (
+              <ProductItem key={product.id} product={product} handleAddToCart={handleAddToCart} />
+            );
           })}
         </div>
       </div>

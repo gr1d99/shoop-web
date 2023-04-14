@@ -29,14 +29,19 @@ export interface IAuthContext extends AuthCtxInitialState {
  * Current user context types and interfaces
  * */
 export interface CurrentUserInitialState {
-  user: UserResource | null;
-  cart: CartResource | null;
+  user: UserResource['data'] | null;
+  cart: CartResource['data'] | null;
 }
 
-export interface CurrentUserAction {
-  type: 'SET_CURRENT_USER';
-  payload: UserResource | null;
-}
+export type CurrentUserAction =
+  | {
+      type: 'SET_CURRENT_USER';
+      payload: UserResource['data'] | null;
+    }
+  | {
+      type: 'SET_CART';
+      payload: CartResource['data'] | null;
+    };
 export interface CurrentUserCtx extends CurrentUserInitialState {
   userLoaded: boolean;
 }
