@@ -1,6 +1,6 @@
 import { type QueryParams, type RequestParams } from '../../types';
 import { useQuery } from 'react-query';
-import { fetchCategories } from '../../pages/home/api/categories';
+import { fetchCategories } from '../../queries/categories';
 import { type CategoriesResponse } from '../../pages/home/types';
 
 const useFetchCategories = (

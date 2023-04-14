@@ -3,7 +3,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { useAuth } from '../../contexts/auth-context';
 import { type TNavigation } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
@@ -11,10 +10,11 @@ import { useLoaderData, Outlet, Link } from 'react-router-dom';
 import { NavLink } from '../links';
 import { CartNav } from '../nav/cart-nav';
 import { VerticalSeparator } from '../separator/vertical';
+import { useAuth } from '../../utils/hooks/use-auth';
 
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { authenticated, signOutUser, username } = useAuth();
+  const { authenticated, signOutUser } = useAuth();
   const navigation = useLoaderData() as TNavigation;
 
   const hideSidebar = (): void => {
@@ -92,7 +92,6 @@ const AppLayout = (): JSX.Element => {
                           hideSidebar={hideSidebar}
                           authenticated={authenticated}
                           signOutUser={signOutUser}
-                          username={username}
                           target={'mobile'}
                         />
                       </li>
@@ -135,7 +134,6 @@ const AppLayout = (): JSX.Element => {
                   hideSidebar={hideSidebar}
                   authenticated={authenticated}
                   signOutUser={signOutUser}
-                  username={username}
                   target={'desktop'}
                 />
               </li>
@@ -184,7 +182,7 @@ const AppLayout = (): JSX.Element => {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
                 <VerticalSeparator />
-                <CartNav items={[1, 2]} />
+                <CartNav items={[]} />
               </div>
             </div>
           </div>
