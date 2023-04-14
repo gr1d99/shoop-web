@@ -39,17 +39,23 @@ const useAddToCart = (): AddToCart => {
             onSuccess: async ({ data }) => {
               await queryClient.invalidateQueries(['carts', data.attributes.cart_id]);
               const usersParams = { email: user.attributes.email };
-              console.log(usersParams);
               await queryClient.invalidateQueries(['users', usersParams]);
             },
             onError: (error) => {
               if (isAxiosError(error)) {
                 const { response } = error;
-                if (response?.data?.product_id) {
+                if (response?.data?.product_id !== undefined) {
                   toast.custom(
                     <ErrorListToast errors={['Item already exists in cart']} title="Add to Cart" />
                   );
                 }
+              } else {
+                toast.custom(
+                  <ErrorListToast
+                    errors={[error?.message || JSON.stringify(error)]}
+                    title="Add to Cart"
+                  />
+                );
               }
             }
           }
