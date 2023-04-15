@@ -6,7 +6,7 @@ import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { toasts } from '../components/toast';
 import * as localforage from 'localforage';
-import { useNavigate, useMatch } from 'react-router-dom';
+import { useNavigate, useMatch, useLocation } from 'react-router-dom';
 import { type AuthCtxAction, type IAuthContext, type AuthCtxInitialState } from './types';
 import { jwtKey } from '../constants';
 
@@ -82,6 +82,7 @@ const reducer = (
 const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [state, localDispatch] = React.useReducer(reducer, initialState);
   const navigate = useNavigate();
+  const location = useLocation();
   const loginMatch = useMatch('/login');
   const isLoginMatch = loginMatch !== null;
   const mutation = useMutation<LoginResponse, unknown, FormValues>({
@@ -104,6 +105,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
       });
   };
 
+  const handleNavigate = (to: string) => {
+    const nextPath = location.state?.next;
+    if (nextPath !== undefined && typeof nextPath === 'string') {
+      navigate(nextPath);
+    } else {
+      navigate(to);
+    }
+  };
+
   React.useEffect(() => {
     if (!boot.current) {
       void restoreAuthFromStore();
@@ -113,7 +123,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
 
   React.useEffect(() => {
     if (boot.current && isLoginMatch && state.authenticated && !state.loading) {
-      navigate('/');
+      handleNavigate('/');
     }
   }, [boot.current, isLoginMatch, state.authenticated, state.loading]);
 
@@ -137,7 +147,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
         })
         .then(restoreAuthFromStore)
         .then(() => {
-          navigate('/');
+          handleNavigate('/');
           reset();
         })
         .catch((err) => {
@@ -159,9 +169,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     await localforage
       .removeItem(jwtKey)
       .then(restoreAuthFromStore)
-      .then(() => {
-        navigate('/login');
-      })
       .catch((error) => {
         console.error(error);
       });

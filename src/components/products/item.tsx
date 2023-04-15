@@ -1,43 +1,33 @@
 import { AddToCartButton } from '../button';
 import React from 'react';
-import { type ProductResource } from '../../types';
+import { type CartItemResources, type ProductResource } from '../../types';
 import { ProductImage } from './image';
 import { ProductRatings } from './ratings';
 import { Link } from 'react-router-dom';
 import { ProductReviews } from './reviews';
 import { type AddToCart } from '../../utils/hooks/use-add-to-cart';
+import { utils } from '../../utils';
 
-// const p: ProductResource = {
-//   data: {
-//     id: '2',
-//     type: 'p',
-//     attributes: {
-//       slug: '2',
-//       name: 'a',
-//       description: 'a',
-//       brand_id: 1,
-//       category_id: 2,
-//       meta: [],
-//       images: []
-//     },
-//     relationships: []
-//   }
-// };
 const ProductItem = ({
   product,
-  handleAddToCart
+  handleAddToCart,
+  cartItems,
+  itemIndex
 }: {
   product: ProductResource['data'];
   handleAddToCart: AddToCart['handleAddToCart'];
+  cartItems: CartItemResources | null;
+  itemIndex: number;
 }): JSX.Element => {
-  const { attributes } = product;
+  const { attributes, id } = product;
   const { name, images, slug }: ProductResource['data']['attributes'] = attributes;
   const [image] = images;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const url = `/product/${slug}`;
+  const itemInCart = utils.cart.productInCart(cartItems, id);
 
   const onAddToCart = (): void => {
-    handleAddToCart(product);
+    handleAddToCart(product, 1);
   };
   return (
     <div>
@@ -50,7 +40,14 @@ const ProductItem = ({
             </p>
           </div>
           <div className="hidden md:block">
-            <AddToCartButton label={'Add'} onClick={onAddToCart} />
+            <AddToCartButton
+              label={'Add'}
+              onClick={onAddToCart}
+              {...{ inCart: itemInCart }}
+              inCart={itemInCart}
+              itemIndex={itemIndex}
+              target={'desktop'}
+            />
           </div>
         </div>
         <div className="">
@@ -64,7 +61,14 @@ const ProductItem = ({
             <ProductRatings />
             <ProductReviews />
             <div className="w-full md:hidden">
-              <AddToCartButton label={'Add'} data-cy="add-to-cart-btn" onClick={onAddToCart} />
+              <AddToCartButton
+                label={'Add'}
+                data-cy="add-to-cart-btn"
+                onClick={onAddToCart}
+                inCart={itemInCart}
+                itemIndex={itemIndex}
+                target={'mobile'}
+              />
             </div>
           </div>
         </div>

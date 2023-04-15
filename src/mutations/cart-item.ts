@@ -7,7 +7,7 @@ const useCreateCartItem = () => {
     CartItemResource,
     any,
     {
-      cart_id: number;
+      cart_id: string;
       amount: number;
       product_id: number;
       sku_id: number;

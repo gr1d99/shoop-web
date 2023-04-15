@@ -1,6 +1,6 @@
 import { type FormValues } from '../pages/login/types';
 import { type FormikHelpers } from 'formik';
-import { type CartResource, type UserResource } from '../types';
+import { type CartItemResources, type CartResource, type UserResource } from '../types';
 
 export interface AuthCtxInitialState {
   loading: boolean;
@@ -31,6 +31,7 @@ export interface IAuthContext extends AuthCtxInitialState {
 export interface CurrentUserInitialState {
   user: UserResource['data'] | null;
   cart: CartResource['data'] | null;
+  cartItems: CartItemResources | null;
 }
 
 export type CurrentUserAction =
@@ -41,6 +42,10 @@ export type CurrentUserAction =
   | {
       type: 'SET_CART';
       payload: CartResource['data'] | null;
+    }
+  | {
+      type: 'SET_CART_ITEMS';
+      payload: CartItemResources | null;
     };
 export interface CurrentUserCtx extends CurrentUserInitialState {
   userLoaded: boolean;
