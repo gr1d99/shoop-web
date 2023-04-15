@@ -4,11 +4,12 @@ import { type CurrentUserCtx, type CurrentUserAction, type CurrentUserInitialSta
 
 import { useFetchUsers } from '../queries/users';
 import { useAuth } from '../utils/hooks/use-auth';
-import { useFetchCart } from '../queries/carts';
+import { useFetchCart, useFetchCartItems } from '../queries/carts';
 
 const initialState: CurrentUserInitialState = {
   user: null,
-  cart: null
+  cart: null,
+  cartItems: null
 };
 export const CurrentUserContext = React.createContext<CurrentUserCtx>(
   initialState as CurrentUserCtx
@@ -21,6 +22,10 @@ const reducer = (state: CurrentUserInitialState = initialState, action: CurrentU
 
   if (action.type === 'SET_CART') {
     return { ...state, cart: action.payload };
+  }
+
+  if (action.type === 'SET_CART_ITEMS') {
+    return { ...state, cartItems: action.payload };
   }
 
   return state;
@@ -37,12 +42,17 @@ const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
   const users = usersResponse?.data;
   const user = users?.[0];
-  const currentCartId = user?.attributes?.current_cart?.id;
+  const currentCartId = user?.attributes?.current_cart?.id?.toString();
   const isFetchCartEnabled = authenticated && currentCartId !== undefined;
   const { data: cartsResponse } = useFetchCart(currentCartId, {
     isEnabled: isFetchCartEnabled
   });
   const cart = cartsResponse?.data;
+  const isFetchItemsEnabled = isFetchCartEnabled;
+  const { data: cartItemsResponse } = useFetchCartItems(currentCartId, {
+    isEnabled: isFetchItemsEnabled
+  });
+  const cartItems = cartItemsResponse;
 
   React.useEffect(() => {
     if (user !== undefined) {
@@ -52,7 +62,11 @@ const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (cart !== undefined) {
       dispatch({ type: 'SET_CART', payload: cart });
     }
-  }, [user, cart]);
+
+    if (cartItems !== undefined) {
+      dispatch({ type: 'SET_CART_ITEMS', payload: cartItems });
+    }
+  }, [user, cart, cartItems]);
 
   return (
     <CurrentUserContext.Provider value={{ ...state, userLoaded }}>

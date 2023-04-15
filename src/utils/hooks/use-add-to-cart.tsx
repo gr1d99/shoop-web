@@ -6,6 +6,9 @@ import { useQueryClient } from 'react-query';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { toasts } from '../../components/toast';
+import { queryKeys } from '../query-keys';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { utils } from '../index';
 
 const { ErrorListToast } = toasts;
 
@@ -18,6 +21,9 @@ const useAddToCart = (): AddToCart => {
   const { authenticated } = useAuth();
   const { cart, user } = useCurrentUser();
   const { mutate } = useCreateCartItem();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleAddToCart: AddToCart['handleAddToCart'] = (product, quantity = 1) => {
     if (authenticated) {
       const { attributes } = product;
@@ -31,15 +37,15 @@ const useAddToCart = (): AddToCart => {
         };
 
       if (cart !== null && user !== null) {
-        const cartId = cart.id;
+        const cartId = cart.id?.toString();
 
         mutate(
           { cart_id: cartId, ...itemPayload },
           {
             onSuccess: async ({ data }) => {
-              await queryClient.invalidateQueries(['carts', data.attributes.cart_id]);
-              const usersParams = { email: user.attributes.email };
-              await queryClient.invalidateQueries(['users', usersParams]);
+              const cartIdToStr = data.attributes.cart_id?.toString();
+              await queryClient.invalidateQueries(queryKeys.cartKeys.one(cartIdToStr));
+              await queryClient.invalidateQueries(queryKeys.cartKeys.items.all(cartIdToStr, {}));
             },
             onError: (error) => {
               if (isAxiosError(error)) {
@@ -48,6 +54,21 @@ const useAddToCart = (): AddToCart => {
                   toast.custom(
                     <ErrorListToast errors={['Item already exists in cart']} title="Add to Cart" />
                   );
+                } else {
+                  try {
+                    const errors: string[] = [];
+                    Object.keys(response?.data).forEach((key) => {
+                      errors.push(`${key} ${response?.data[key]}`);
+                    });
+                    toast.custom(<ErrorListToast errors={errors} title="Add to Cart" />);
+                  } catch (e) {
+                    toast.custom(
+                      <ErrorListToast
+                        errors={[error?.message || JSON.stringify(error)]}
+                        title="Add to Cart"
+                      />
+                    );
+                  }
                 }
               } else {
                 toast.custom(
@@ -62,7 +83,7 @@ const useAddToCart = (): AddToCart => {
         );
       }
     } else {
-      console.log('mot authenticated');
+      navigate(utils.routePaths.login, { state: { next: location.pathname } });
     }
   };
 

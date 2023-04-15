@@ -49,7 +49,7 @@ export type CartRequestParams = RequestParams;
  * API Types/Interfaces
  */
 interface ResourceReadonly {
-  readonly id: number;
+  readonly id: number | string;
   readonly slug: string;
 }
 export interface ResourceRelationshipData {
@@ -93,11 +93,14 @@ export interface CartResources {
   data: Array<CartResource['data']>;
   meta: ResourcesDataMeta;
 }
-
 export type CartItemResource = Resource<
   Pick<CartItem, 'amount' | 'quantity' | 'product_id' | 'sku_id' | 'cart_id'>,
   any
 >;
+export interface CartItemResources {
+  data: Array<CartItemResource['data']>;
+  meta: ResourcesDataMeta;
+}
 
 export type UserResource = Resource<
   Pick<User, 'email' | 'phone' | 'first_name' | 'last_name' | 'current_cart'>,

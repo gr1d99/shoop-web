@@ -15,4 +15,7 @@ export interface Props extends React.ComponentPropsWithoutRef<'button'> {
 export interface AddToCartBtnProps
   extends Omit<React.ComponentPropsWithoutRef<'button'>, 'children'> {
   label: string;
+  inCart: boolean;
+  itemIndex: number;
+  target: 'desktop' | 'mobile';
 }
