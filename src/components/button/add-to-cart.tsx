@@ -15,21 +15,9 @@ const AddToCartButton = (props: AddToCartBtnProps): JSX.Element => {
         } h-full w-full  justify-center rounded-full bg-indigo-600 px-2 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 lg:justify-between`}
         {...rest}>
         {quantity === 1 ? (
-          <TrashIcon
-            className="h-5 w-5 text-white"
-            aria-hidden="true"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          <TrashIcon className="h-5 w-5 text-white" aria-hidden="true" data-action={'delete'} />
         ) : (
-          <MinusIcon
-            className="h-5 w-5 text-white"
-            aria-hidden="true"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          <MinusIcon className="h-5 w-5 text-white" aria-hidden="true" data-action={'decrement'} />
         )}
       </button>
       <div
@@ -52,9 +40,7 @@ const AddToCartButton = (props: AddToCartBtnProps): JSX.Element => {
         <PlusIcon
           className="h-5 w-5 text-white"
           aria-hidden="true"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+          data-action={inCart ? 'increment' : 'create'}
         />{' '}
         {!inCart ? label : null}
       </button>
