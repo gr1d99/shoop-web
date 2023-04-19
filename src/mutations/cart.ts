@@ -21,4 +21,16 @@ const useCreateCartItem = () => {
   });
 };
 
-export { useCreateCartItem };
+const useDeleteCartItem = () => {
+  return useMutation<null, any, { cartId: string; cartItemId: string }>({
+    mutationFn: async (params) => {
+      return await api.delete(
+        `/carts/${params.cartId}/cart_items/${params.cartItemId}`,
+        {},
+        { 'X-AUTHENTICATE': true }
+      );
+    }
+  });
+};
+
+export { useCreateCartItem, useDeleteCartItem };

@@ -1,7 +1,7 @@
-import { type ProductResource } from '../../types';
+import { type CartItemResource, type CartItemResources, type ProductResource } from '../../types';
 import { useAuth } from './use-auth';
 import { useCurrentUser } from './use-current-user';
-import { useCreateCartItem } from '../../mutations/cart';
+import { useCreateCartItem, useDeleteCartItem } from '../../mutations/cart';
 import { useQueryClient } from 'react-query';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
@@ -9,10 +9,11 @@ import { toasts } from '../../components/toast';
 import { queryKeys } from '../query-keys';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { utils } from '../index';
+import { type ProductCartItemMap } from '../cart';
 
-const { ErrorListToast } = toasts;
+const { ErrorListToast, SuccessToast } = toasts;
 
-export type ModifyCartAction = 'increment' | 'decrement' | 'create';
+export type ModifyCartAction = 'increment' | 'decrement' | 'create' | 'delete';
 
 export interface AddToCart {
   handleModifyCart: (
@@ -25,8 +26,9 @@ export interface AddToCart {
 const useAddToCart = (): AddToCart => {
   const queryClient = useQueryClient();
   const { authenticated } = useAuth();
-  const { cart } = useCurrentUser();
-  const { mutate } = useCreateCartItem();
+  const { cart, cartItems } = useCurrentUser();
+  const { mutate: createCartItem } = useCreateCartItem();
+  const { mutate: deleteCartItem } = useDeleteCartItem();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,18 +44,17 @@ const useAddToCart = (): AddToCart => {
           quantity
         };
 
-      console.log({ cart });
-
       if (cart !== null) {
         const cartId = cart.id?.toString();
 
-        mutate(
+        createCartItem(
           { cart_id: cartId, ...itemPayload },
           {
             onSuccess: async ({ data }) => {
               const cartIdToStr = data.attributes.cart_id?.toString();
               await queryClient.invalidateQueries(queryKeys.cartKeys.one(cartIdToStr));
               await queryClient.invalidateQueries(queryKeys.cartKeys.items.all(cartIdToStr, {}));
+              toast.custom(<SuccessToast message={'Item added to cart'} title="" />);
             },
             onError: (error) => {
               if (isAxiosError(error)) {
@@ -94,10 +95,57 @@ const useAddToCart = (): AddToCart => {
       navigate(utils.routePaths.login, { state: { next: location.pathname } });
     }
   };
+  const handleDeleteCartItem = (item: CartItemResource['data']) => {
+    if (authenticated) {
+      deleteCartItem(
+        {
+          cartId: item.attributes.cart_id.toString(),
+          cartItemId: item.id.toString()
+        },
+        {
+          onSuccess: async () => {
+            const cartIdToStr = item.attributes.cart_id?.toString();
+            await queryClient.invalidateQueries(queryKeys.cartKeys.one(cartIdToStr));
+            await queryClient.invalidateQueries(queryKeys.cartKeys.items.all(cartIdToStr, {}));
+            toast.custom(<SuccessToast message={'Item removed from cart'} title="" />);
+          },
+          onError: (error: any) => {
+            if (isAxiosError(error)) {
+              const { response } = error;
+              const errors: string[] = [];
+              Object.keys(response?.data).forEach((key) => {
+                errors.push(`${key} ${response?.data[key]}`);
+              });
+              toast.custom(
+                <ErrorListToast
+                  errors={errors ?? [response?.data?.message ?? 'Something went wrong']}
+                  title="Remove from Cart"
+                />
+              );
+            } else {
+              toast.custom(
+                <ErrorListToast errors={['Something went wrong']} title="Remove from Cart" />
+              );
+            }
+          }
+        }
+      );
+    } else {
+      console.log('aaaaaa');
+    }
+  };
 
   const handleModifyCart: AddToCart['handleModifyCart'] = (product, action, quantity) => {
     if (action === 'create' && typeof quantity === 'number') {
       handleAddToCart(product, quantity);
+    }
+
+    if (action === 'delete') {
+      const cartItemsMapping = utils.cart.cartItemMapping(cartItems as CartItemResources);
+      const cartItem = utils.cart.productItemMapping(
+        cartItemsMapping === undefined ? {} : cartItemsMapping
+      )?.[product.id as keyof ProductCartItemMap];
+      handleDeleteCartItem(cartItem);
     }
   };
 
