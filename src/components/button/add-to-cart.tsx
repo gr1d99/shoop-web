@@ -1,6 +1,6 @@
 import React from 'react';
 import { type AddToCartBtnProps } from './types';
-import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, MinusIcon, TrashIcon } from '@heroicons/react/24/solid';
 
 const AddToCartButton = (props: AddToCartBtnProps): JSX.Element => {
   const { label, inCart, itemIndex, target, item, ...rest } = props;
@@ -9,18 +9,28 @@ const AddToCartButton = (props: AddToCartBtnProps): JSX.Element => {
   return (
     <div className="group relative flex h-full flex-nowrap items-center rounded-full bg-indigo-600 font-normal antialiased">
       <button
-        data-action="decrement"
+        data-action={quantity === 1 ? 'delete' : 'decrement'}
         className={`${
           inCart ? 'inline-flex' : 'hidden'
-        } h-full w-full justify-center rounded-full  bg-indigo-600 px-2 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 lg:justify-between`}
+        } h-full w-full  justify-center rounded-full bg-indigo-600 px-2 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 lg:justify-between`}
         {...rest}>
-        <MinusIcon
-          className="h-5 w-5 text-white"
-          aria-hidden="true"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
+        {quantity === 1 ? (
+          <TrashIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        ) : (
+          <MinusIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )}
       </button>
       <div
         className={`${
