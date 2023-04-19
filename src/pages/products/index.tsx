@@ -8,7 +8,7 @@ import { useCurrentUser } from '../../utils/hooks/use-current-user';
 
 const ProductsPage = (): JSX.Element => {
   const payload = useLoaderData() as CategoryProductsLoader;
-  const { handleAddToCart } = useAddToCart();
+  const { handleModifyCart } = useAddToCart();
   const { cartItems } = useCurrentUser();
   const isError = axios.isAxiosError(payload);
   if (isError) {
@@ -20,8 +20,8 @@ const ProductsPage = (): JSX.Element => {
     <div className="-mx-px grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
       <ProductsList
         products={productsList}
-        handleAddToCart={handleAddToCart}
         cartItems={cartItems}
+        handleModifyCart={handleModifyCart}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import type React from 'react';
 import { type HeroIcon } from '@heroicons/react/*';
+import { type CartItemResource } from '../../types';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'default';
 export interface Props extends React.ComponentPropsWithoutRef<'button'> {
@@ -18,4 +19,5 @@ export interface AddToCartBtnProps
   inCart: boolean;
   itemIndex: number;
   target: 'desktop' | 'mobile';
+  item: CartItemResource['data'];
 }
