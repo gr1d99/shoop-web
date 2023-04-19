@@ -1,7 +1,7 @@
 import { type ProductResource } from '../../types';
 import { useAuth } from './use-auth';
 import { useCurrentUser } from './use-current-user';
-import { useCreateCartItem } from '../../mutations/cart-item';
+import { useCreateCartItem } from '../../mutations/cart';
 import { useQueryClient } from 'react-query';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
@@ -12,19 +12,25 @@ import { utils } from '../index';
 
 const { ErrorListToast } = toasts;
 
+export type ModifyCartAction = 'increment' | 'decrement' | 'create';
+
 export interface AddToCart {
-  handleAddToCart: (product: ProductResource['data'], quantity: number) => void;
+  handleModifyCart: (
+    product: ProductResource['data'],
+    action: ModifyCartAction,
+    quantity?: number
+  ) => void;
 }
 
 const useAddToCart = (): AddToCart => {
   const queryClient = useQueryClient();
   const { authenticated } = useAuth();
-  const { cart, user } = useCurrentUser();
+  const { cart } = useCurrentUser();
   const { mutate } = useCreateCartItem();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleAddToCart: AddToCart['handleAddToCart'] = (product, quantity = 1) => {
+  const handleAddToCart = (product: ProductResource['data'], quantity: number): void => {
     if (authenticated) {
       const { attributes } = product;
       const { master } = attributes;
@@ -36,7 +42,9 @@ const useAddToCart = (): AddToCart => {
           quantity
         };
 
-      if (cart !== null && user !== null) {
+      console.log({ cart });
+
+      if (cart !== null) {
         const cartId = cart.id?.toString();
 
         mutate(
@@ -87,7 +95,13 @@ const useAddToCart = (): AddToCart => {
     }
   };
 
-  return { handleAddToCart };
+  const handleModifyCart: AddToCart['handleModifyCart'] = (product, action, quantity) => {
+    if (action === 'create' && typeof quantity === 'number') {
+      handleAddToCart(product, quantity);
+    }
+  };
+
+  return { handleModifyCart };
 };
 
 export { useAddToCart };

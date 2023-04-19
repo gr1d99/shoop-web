@@ -6,12 +6,12 @@ import { type CartItemResources, type ProductsResources } from '../../types';
 
 const ProductsList = ({
   products,
-  handleAddToCart,
-  cartItems
+  cartItems,
+  handleModifyCart
 }: {
   products: ProductsResources['data'];
-  handleAddToCart: AddToCart['handleAddToCart'];
   cartItems: CartItemResources | null;
+  handleModifyCart: AddToCart['handleModifyCart'];
 }): JSX.Element => {
   return (
     <>
@@ -21,9 +21,9 @@ const ProductsList = ({
           <div key={id} className="group relative p-4 sm:p-6" data-cy={`product-item-${index}`}>
             <ProductItem
               product={product}
-              handleAddToCart={handleAddToCart}
               cartItems={cartItems}
               itemIndex={index}
+              handleModifyCart={handleModifyCart}
             />
           </div>
         );
