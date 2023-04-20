@@ -15,15 +15,12 @@ import type { AxiosError } from 'axios';
 import { withErrorBoundary } from '../../components/errors';
 import { utils } from '../../utils';
 import { type ProductResource } from '../../types';
-import { useAddToCart } from '../../utils/hooks/use-add-to-cart';
 
 const ProductPage = (): JSX.Element => {
   const product = useLoaderData() as ProductResource['data'] | AxiosError;
-  const { handleAddToCart } = useAddToCart();
   if (isAxiosError(product)) {
     return utils.errors.resolveResourceError(product);
   }
-
   const products = Array.from([
     product,
     product,
@@ -85,16 +82,16 @@ const ProductPage = (): JSX.Element => {
           </Tab.List>
         </Tab.Group>
         <div className="grid lg:hidden">
-          <AddToCartButton label={'Add to Cart'} />
+          <AddToCartButton label={'Add to Cart'} inCart={false} />
         </div>
         <div className="mt-2 grid w-full lg:hidden">
           <h2 className="font-bold antialiased"> Similar Items</h2>
           {/* <div className="grid"> */}
           <div className="flex w-full space-x-3 overflow-x-scroll scroll-smooth">
-            {products.map((product) => {
+            {products.map((product, index) => {
               return (
                 <div key={product.id} className="w-1/3 py-4">
-                  <ProductItem product={product} handleAddToCart={handleAddToCart} />
+                  <ProductItem product={product} itemIndex={index} />
                 </div>
               );
             })}
@@ -193,9 +190,7 @@ const ProductPage = (): JSX.Element => {
         <h2 className="py-2 font-bold antialiased"> Similar Items</h2>
         <div className="grid grid-cols-5 gap-x-4 gap-y-8 divide-gray-500">
           {products.map((product) => {
-            return (
-              <ProductItem key={product.id} product={product} handleAddToCart={handleAddToCart} />
-            );
+            return <ProductItem key={product.id} product={product} />;
           })}
         </div>
       </div>

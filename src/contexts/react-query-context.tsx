@@ -5,7 +5,6 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 const client = new QueryClient();
 const isDev = import.meta.env.DEV;
 const ReactQueryProvider = (props: { children: React.ReactNode }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [devToolsOpen, setDevToolsOpen] = React.useState(false);
   const isMounted = React.useRef(false);
 

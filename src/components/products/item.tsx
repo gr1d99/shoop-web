@@ -45,7 +45,6 @@ const ProductItem = ({
 
     handleModifyCart(product, action, 1);
   };
-
   return (
     <div>
       <ProductImage slug={slug} image={image} />
