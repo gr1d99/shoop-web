@@ -9,10 +9,6 @@ import { type AddToCart, type ModifyCartAction } from '../../utils/hooks/use-add
 import { utils } from '../../utils';
 import { type ProductCartItemMap } from '../../utils/cart';
 
-const toCurrency = (number: number) => {
-  return number.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
-};
-
 const ProductItem = ({
   product,
   cartItems,
@@ -52,7 +48,7 @@ const ProductItem = ({
         <div className="flex w-full items-center justify-between">
           <div className="">
             <p className="text-sm font-bold text-gray-900" data-cy="product-price">
-              {toCurrency(Number(master.price))}
+              {utils.locales.toCurrency(Number(master.price))}
             </p>
           </div>
           <div className="hidden md:block">
