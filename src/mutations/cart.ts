@@ -21,6 +21,21 @@ const useCreateCartItem = () => {
   });
 };
 
+const useUpdateCartItem = () => {
+  return useMutation<
+    CartItemResource,
+    any,
+    { cartId: string; cartItemId: string; amount?: number; quantity?: number }
+  >({
+    mutationFn: async (params) => {
+      const { cartId, cartItemId, ...rest } = params;
+      return await api.update(`/carts/${cartId}/cart_items/${cartItemId}`, rest, {
+        'X-AUTHENTICATE': true
+      });
+    }
+  });
+};
+
 const useDeleteCartItem = () => {
   return useMutation<null, any, { cartId: string; cartItemId: string }>({
     mutationFn: async (params) => {
@@ -33,4 +48,4 @@ const useDeleteCartItem = () => {
   });
 };
 
-export { useCreateCartItem, useDeleteCartItem };
+export { useCreateCartItem, useUpdateCartItem, useDeleteCartItem };
