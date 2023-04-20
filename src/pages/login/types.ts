@@ -1,4 +1,3 @@
-import type React from 'react';
 import { type FormikHelpers } from 'formik';
 
 export interface FormValues {

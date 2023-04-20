@@ -1,6 +1,5 @@
 // import { NotFound } from './not-found';
 // import { ServerError } from './server-error';
-import { type AxiosError } from 'axios';
 import React from 'react';
 import ErrorBoundary from '../error-boundary';
 

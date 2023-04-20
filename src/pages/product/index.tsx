@@ -14,10 +14,15 @@ import { isAxiosError } from 'axios';
 import type { AxiosError } from 'axios';
 import { withErrorBoundary } from '../../components/errors';
 import { utils } from '../../utils';
-import { type ProductResource } from '../../types';
+import { type CartItemResources, type ProductResource } from '../../types';
+import { useCurrentUser } from '../../utils/hooks/use-current-user';
+import { type ProductCartItemMap } from '../../utils/cart';
+import { type ModifyCartAction, useAddToCart } from '../../utils/hooks/use-add-to-cart';
 
 const ProductPage = (): JSX.Element => {
   const product = useLoaderData() as ProductResource['data'] | AxiosError;
+  const { cartItems } = useCurrentUser();
+  const { handleModifyCart } = useAddToCart();
   if (isAxiosError(product)) {
     return utils.errors.resolveResourceError(product);
   }
@@ -33,8 +38,26 @@ const ProductPage = (): JSX.Element => {
     product,
     product
   ]);
-  const { attributes } = product;
-  const { name, images, description } = attributes;
+  const { attributes, id } = product;
+  const { name, images, description, master } = attributes;
+  const inCart = utils.cart.productInCart(cartItems, id);
+  const cartItemsMapping = utils.cart.cartItemMapping(cartItems as CartItemResources);
+  const cartItem = utils.cart.productItemMapping(
+    cartItemsMapping === undefined ? {} : cartItemsMapping
+  )?.[product.id as keyof ProductCartItemMap];
+
+  const handleOnAddClick = (event: React.SyntheticEvent<HTMLButtonElement | SVGSVGElement>) => {
+    const isButtonEl = event.target instanceof HTMLButtonElement;
+    const isSvgEl = event.target instanceof SVGElement;
+    if (!isButtonEl && !isSvgEl) {
+      return;
+    }
+
+    const action = event.currentTarget.dataset?.action as ModifyCartAction;
+
+    handleModifyCart(product, action, 1);
+  };
+
   return (
     <div className="relative">
       <div className="grid gap-y-4 lg:grid-flow-col lg:grid-cols-3 lg:gap-x-2 lg:pt-8">
@@ -42,7 +65,7 @@ const ProductPage = (): JSX.Element => {
           <ProductBrand brand={'Food'} />
           <ProductTitle title={name} />
           <div className="flex justify-between">
-            <ProductPrice size="sm" />
+            <ProductPrice size="sm" price={Number(master.price)} />
             <div className="flex flex-col items-end space-x-2">
               <ProductRatings />
               <ProductReviews underline />
@@ -82,21 +105,33 @@ const ProductPage = (): JSX.Element => {
           </Tab.List>
         </Tab.Group>
         <div className="grid lg:hidden">
-          <AddToCartButton label={'Add to Cart'} inCart={false} />
+          <AddToCartButton
+            label={'Add to Cart'}
+            inCart={inCart}
+            item={cartItem}
+            target={'desktop'}
+            itemIndex={0}
+            onClick={handleOnAddClick}
+          />
         </div>
         <div className="mt-2 grid w-full lg:hidden">
           <h2 className="font-bold antialiased"> Similar Items</h2>
-          {/* <div className="grid"> */}
-          <div className="flex w-full space-x-3 overflow-x-scroll scroll-smooth">
-            {products.map((product, index) => {
-              return (
-                <div key={product.id} className="w-1/3 py-4">
-                  <ProductItem product={product} itemIndex={index} />
-                </div>
-              );
-            })}
+          <div className="grid">
+            <div className="flex w-full space-x-3 overflow-x-scroll scroll-smooth">
+              {products.map((product, index) => {
+                return (
+                  <div key={`${product.id}-desktop}`} className="w-1/3 py-4">
+                    <ProductItem
+                      product={product}
+                      itemIndex={index}
+                      cartItems={cartItems}
+                      handleModifyCart={handleModifyCart}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          {/* </div> */}
         </div>
         <div className="grid lg:hidden">
           <h2 className="font-bold antialiased">Description</h2>
@@ -167,14 +202,20 @@ const ProductPage = (): JSX.Element => {
             </div>
 
             {/* Pricing */}
-            <div className="flex items-center space-x-4 py-2">
-              <h2 className="text-lg font-extrabold antialiased">Now Ksh 100</h2>
-              <small className="text-gray-500 line-through">Ksh 99</small>
+            <div className="py-2">
+              <ProductPrice size={'lg'} price={Number(master.price)} />
             </div>
 
             {/* Add to Cart */}
             <div className="w-fit">
-              <AddToCartButton label={'Add to Cart'} />
+              <AddToCartButton
+                label={'Add to Cart'}
+                inCart={inCart}
+                item={cartItem}
+                target="mobile"
+                itemIndex={0}
+                onClick={handleOnAddClick}
+              />
             </div>
             <div className="p-2">
               <div className="border-b border-gray-300" />
@@ -189,8 +230,16 @@ const ProductPage = (): JSX.Element => {
       <div className="hidden lg:block lg:pt-6">
         <h2 className="py-2 font-bold antialiased"> Similar Items</h2>
         <div className="grid grid-cols-5 gap-x-4 gap-y-8 divide-gray-500">
-          {products.map((product) => {
-            return <ProductItem key={product.id} product={product} />;
+          {products.map((product, index) => {
+            return (
+              <ProductItem
+                key={`${product.id}-mobile`}
+                product={product}
+                handleModifyCart={handleModifyCart}
+                cartItems={cartItems}
+                itemIndex={index}
+              />
+            );
           })}
         </div>
       </div>
