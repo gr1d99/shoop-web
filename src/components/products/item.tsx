@@ -34,12 +34,14 @@ const ProductItem = ({
     cartItemsMapping === undefined ? {} : cartItemsMapping
   )?.[product.id as keyof ProductCartItemMap];
 
-  const handleOnAddClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
-    if (!(event.target instanceof HTMLButtonElement)) {
+  const handleOnAddClick = (event: React.SyntheticEvent<HTMLButtonElement | SVGSVGElement>) => {
+    const isButtonEl = event.target instanceof HTMLButtonElement;
+    const isSvgEl = event.target instanceof SVGElement;
+    if (!isButtonEl && !isSvgEl) {
       return;
     }
 
-    const action = event.target.dataset?.action as ModifyCartAction;
+    const action = event.currentTarget.dataset?.action as ModifyCartAction;
 
     handleModifyCart(product, action, 1);
   };
