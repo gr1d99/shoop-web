@@ -1,7 +1,7 @@
 import { type CartItemResource, type CartItemResources, type ProductResource } from '../../types';
 import { useAuth } from './use-auth';
 import { useCurrentUser } from './use-current-user';
-import { useCreateCartItem, useDeleteCartItem } from '../../mutations/cart';
+import { useCreateCartItem, useDeleteCartItem, useUpdateCartItem } from '../../mutations/cart';
 import { useQueryClient } from 'react-query';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
@@ -28,6 +28,7 @@ const useAddToCart = (): AddToCart => {
   const { authenticated } = useAuth();
   const { cart, cartItems } = useCurrentUser();
   const { mutate: createCartItem } = useCreateCartItem();
+  const { mutate: updateCartItem } = useUpdateCartItem();
   const { mutate: deleteCartItem } = useDeleteCartItem();
   const navigate = useNavigate();
   const location = useLocation();
@@ -119,33 +120,79 @@ const useAddToCart = (): AddToCart => {
               toast.custom(
                 <ErrorListToast
                   errors={errors ?? [response?.data?.message ?? 'Something went wrong']}
-                  title="Remove from Cart"
+                  title="Cart Update"
                 />
               );
             } else {
               toast.custom(
-                <ErrorListToast errors={['Something went wrong']} title="Remove from Cart" />
+                <ErrorListToast errors={['Something went wrong']} title="Cart Update" />
               );
             }
           }
         }
       );
     } else {
-      console.log('aaaaaa');
+      // TODO: Handle offline mode
+    }
+  };
+
+  const handleUpdateCartItem = (item: CartItemResource['data'], quantity: number) => {
+    if (authenticated) {
+      updateCartItem(
+        {
+          cartId: item.attributes.cart_id.toString(),
+          cartItemId: item.id.toString(),
+          quantity
+        },
+        {
+          onSuccess: async ({ data }) => {
+            const cartIdToStr = data.attributes.cart_id?.toString();
+            await queryClient.invalidateQueries(queryKeys.cartKeys.one(cartIdToStr));
+            await queryClient.invalidateQueries(queryKeys.cartKeys.items.all(cartIdToStr, {}));
+            toast.custom(<SuccessToast message={'Item quantity updated!'} title="Cart Update" />);
+          },
+          onError: (error: any) => {
+            if (isAxiosError(error)) {
+              const { response } = error;
+              toast.custom(
+                <ErrorListToast
+                  errors={[response?.data?.message ?? 'Something went wrong']}
+                  title="Cart Update"
+                />
+              );
+            } else {
+              toast.custom(
+                <ErrorListToast errors={['Something went wrong']} title="Cart Update" />
+              );
+            }
+          }
+        }
+      );
+    } else {
+      // TODO: Handle offline mode
     }
   };
 
   const handleModifyCart: AddToCart['handleModifyCart'] = (product, action, quantity) => {
+    const cartItemsMapping = utils.cart.cartItemMapping(cartItems as CartItemResources);
+    const cartItem = utils.cart.productItemMapping(
+      cartItemsMapping === undefined ? {} : cartItemsMapping
+    )?.[product.id as keyof ProductCartItemMap];
+
     if (action === 'create' && typeof quantity === 'number') {
       handleAddToCart(product, quantity);
     }
 
     if (action === 'delete') {
-      const cartItemsMapping = utils.cart.cartItemMapping(cartItems as CartItemResources);
-      const cartItem = utils.cart.productItemMapping(
-        cartItemsMapping === undefined ? {} : cartItemsMapping
-      )?.[product.id as keyof ProductCartItemMap];
       handleDeleteCartItem(cartItem);
+    }
+
+    if (action === 'increment' && quantity !== undefined) {
+      handleUpdateCartItem(cartItem, quantity + cartItem?.attributes.quantity);
+    }
+
+    if (action === 'decrement') {
+      handleUpdateCartItem(cartItem, cartItem?.attributes.quantity - 1);
     }
   };
 
