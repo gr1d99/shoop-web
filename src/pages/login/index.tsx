@@ -1,8 +1,8 @@
 import React from 'react';
 import Card from '../../components/cards';
-import { useAuth } from '../../contexts/auth-context';
 import { LoginForm } from './components/form';
 import { type LoginFormProps } from './types';
+import { useAuth } from '../../utils/hooks/use-auth';
 const LoginPage = (): JSX.Element => {
   const { signInUser } = useAuth();
   const handleSubmit: LoginFormProps['handleSubmit'] = (values, setSubmitting) => {

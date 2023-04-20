@@ -4,5 +4,6 @@ declare namespace Cypress {
   interface Chainable<Subject = Element> {
     login(email: string, password: string): Chainable<Subject>;
     dataCy(name: string): Chainable<Subject>;
+    logout(): Chainable<Subject>;
   }
 }

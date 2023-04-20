@@ -1,5 +1,4 @@
-import { type Resource, type ResourceMeta } from '../types';
-import { type ProductsResponse } from '../pages/products/types';
+import { type ProductsResources, type Resource, type ResourceMeta } from '../types';
 
 interface Category {
   readonly id: number;
@@ -11,6 +10,6 @@ interface Category {
 export type CategoryResponse = Resource<Pick<Category, 'slug' | 'name' | 'meta'>, any>;
 
 export interface CategoryProductsLoader {
-  products: ProductsResponse;
+  products: ProductsResources;
   category: CategoryResponse['data'];
 }

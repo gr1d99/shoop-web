@@ -1,24 +1,16 @@
 import React from 'react';
 import { type FormValues, type LoginResponse } from '../pages/login/types';
-import { type FormikHelpers } from 'formik';
 import { useMutation } from 'react-query';
-import { createAuthAsync } from '../pages/login/api/creat-auth';
+import { createAuthAsync } from '../queries/auth';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { toasts } from '../components/toast';
 import * as localforage from 'localforage';
-import { useNavigate, useMatch } from 'react-router-dom';
+import { useNavigate, useMatch, useLocation } from 'react-router-dom';
+import { type AuthCtxAction, type IAuthContext, type AuthCtxInitialState } from './types';
+import { jwtKey } from '../constants';
 
 const { SuccessToast, ErrorListToast } = toasts;
-const jwtKey = '@shoop-jwt';
-
-interface InitialState {
-  loading: boolean;
-  authenticated: boolean;
-  currentUser: null;
-  token: string;
-  username: string;
-}
 
 const parseJwt = (token: string): { identity: string; exp: number } => {
   const base64Url = token.split('.')[1];
@@ -36,59 +28,40 @@ const parseJwt = (token: string): { identity: string; exp: number } => {
   return JSON.parse(jsonPayload);
 };
 
-interface IAuthContext extends InitialState {
-  signInUser: (data: FormValues, setSubmitting: FormikHelpers<FormValues>['setSubmitting']) => void;
-  signOutUser: () => Promise<void>;
-}
-
-type Action =
-  | {
-      type: 'SET_LOADING';
-      payload: boolean;
-    }
-  | {
-      type: 'AUTHENTICATE';
-      payload: string | null;
-    };
-
-const initialState: InitialState = {
+const initialState: AuthCtxInitialState = {
   loading: false,
   authenticated: false,
-  currentUser: null,
   token: '',
-  username: ''
+  username: '',
+  identity: ''
 };
 
-const AuthContext = React.createContext<IAuthContext>(initialState as IAuthContext);
-
-const useAuth = (): IAuthContext => {
-  const context = React.useContext(AuthContext);
-
-  if (context === undefined) {
-    throw Error(`AuthProvider needs to be wrapped around the component`);
-  }
-
-  return context;
-};
+export const AuthContext = React.createContext<IAuthContext>(initialState as IAuthContext);
 
 const authenticate = (
   token: string | null
-): { authenticated: boolean; token: string; username: string } => {
+): { authenticated: boolean; token: string; username: string; identity: string } => {
   let username = '';
+  let identity = '';
   if (token !== null) {
     const result = parseJwt(token);
     if (result?.identity !== '') {
-      username = result?.identity?.split('@')?.[0];
+      username = result.identity?.split('@')?.[0];
+      identity = result.identity;
     }
   }
   return {
     token: token !== null ? token : '',
     authenticated: token !== null,
-    username
+    username,
+    identity
   };
 };
 
-const reducer = (state: InitialState = initialState, action: Action): InitialState => {
+const reducer = (
+  state: AuthCtxInitialState = initialState,
+  action: AuthCtxAction
+): AuthCtxInitialState => {
   const { type, payload } = action;
   switch (type) {
     case 'SET_LOADING': {
@@ -109,6 +82,7 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
 const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [state, localDispatch] = React.useReducer(reducer, initialState);
   const navigate = useNavigate();
+  const location = useLocation();
   const loginMatch = useMatch('/login');
   const isLoginMatch = loginMatch !== null;
   const mutation = useMutation<LoginResponse, unknown, FormValues>({
@@ -118,7 +92,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     mutationKey: 'login'
   });
   const { mutate, data, error, isError, isSuccess, reset } = mutation;
-
   const boot = React.useRef(false);
 
   const restoreAuthFromStore = async (): Promise<void> => {
@@ -132,6 +105,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
       });
   };
 
+  const handleNavigate = (to: string) => {
+    const nextPath = location.state?.next;
+    if (nextPath !== undefined && typeof nextPath === 'string') {
+      navigate(nextPath);
+    } else {
+      navigate(to);
+    }
+  };
+
   React.useEffect(() => {
     if (!boot.current) {
       void restoreAuthFromStore();
@@ -141,7 +123,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
 
   React.useEffect(() => {
     if (boot.current && isLoginMatch && state.authenticated && !state.loading) {
-      navigate('/');
+      handleNavigate('/');
     }
   }, [boot.current, isLoginMatch, state.authenticated, state.loading]);
 
@@ -165,7 +147,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
         })
         .then(restoreAuthFromStore)
         .then(() => {
-          navigate('/');
+          handleNavigate('/');
           reset();
         })
         .catch((err) => {
@@ -187,9 +169,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
     await localforage
       .removeItem(jwtKey)
       .then(restoreAuthFromStore)
-      .then(() => {
-        navigate('/login');
-      })
       .catch((error) => {
         console.error(error);
       });
@@ -202,17 +181,4 @@ const AuthProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
   );
 };
 
-const withAuthProvider = <P,>(Component: React.FC<P>) => {
-  const WithAuthProvider = (props: React.ComponentProps<any>) => {
-    return (
-      <AuthProvider>
-        <Component {...props} />
-      </AuthProvider>
-    );
-  };
-
-  return WithAuthProvider;
-};
-
 export default AuthProvider;
-export { useAuth, withAuthProvider };

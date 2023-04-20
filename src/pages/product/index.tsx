@@ -1,9 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 import { Tab } from '@headlessui/react';
-import { type ProductResponse } from '../products/types';
 import { ProductRatings } from '../../components/products/ratings';
 import { ProductReviews } from '../../components/products/reviews';
-// import { AddToCartButton } from '../../components/button';
 import React from 'react';
 import { ProductItem } from '../../components/products/item';
 import { ProductTitle } from './components/title';
@@ -12,12 +10,16 @@ import { ProductPrice } from './components/price';
 import { ProductTags } from './components/tags';
 import { ProductMeta } from './components/meta';
 import { AddToCartButton } from '../../components/button';
+import { isAxiosError } from 'axios';
+import type { AxiosError } from 'axios';
+import { withErrorBoundary } from '../../components/errors';
+import { utils } from '../../utils';
+import { type ProductResource } from '../../types';
 
 const ProductPage = (): JSX.Element => {
-  const product = useLoaderData() as ProductResponse['data'] | undefined;
-
-  if (product == null) {
-    return <>Product Not Found</>;
+  const product = useLoaderData() as ProductResource['data'] | AxiosError;
+  if (isAxiosError(product)) {
+    return utils.errors.resolveResourceError(product);
   }
   const products = Array.from([
     product,
@@ -80,16 +82,16 @@ const ProductPage = (): JSX.Element => {
           </Tab.List>
         </Tab.Group>
         <div className="grid lg:hidden">
-          <AddToCartButton label={'Add to Cart'} />
+          <AddToCartButton label={'Add to Cart'} inCart={false} />
         </div>
         <div className="mt-2 grid w-full lg:hidden">
           <h2 className="font-bold antialiased"> Similar Items</h2>
           {/* <div className="grid"> */}
           <div className="flex w-full space-x-3 overflow-x-scroll scroll-smooth">
-            {products.map((product) => {
+            {products.map((product, index) => {
               return (
                 <div key={product.id} className="w-1/3 py-4">
-                  <ProductItem product={product} />
+                  <ProductItem product={product} itemIndex={index} />
                 </div>
               );
             })}
@@ -204,4 +206,4 @@ const ProductPage = (): JSX.Element => {
   );
 };
 
-export default ProductPage;
+export default withErrorBoundary(ProductPage);

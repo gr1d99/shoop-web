@@ -1,11 +1,10 @@
 import { type LoaderFunctionArgs } from 'react-router-dom';
-import { fetchCategories } from '../pages/home/api/categories';
+import { fetchCategories } from '../queries/categories';
 import { type TNavigation, type TNavigationChildren } from '../components/nav/types';
-import { fetchProducts } from '../pages/products/api/products';
-import { type ProductRequestParams } from '../types';
+import { fetchProducts } from '../queries/products';
+import { type ProductRequestParams, type ProductResource } from '../types';
 import api from '../api';
 import { type CategoryProductsLoader, type CategoryResponse } from './types';
-import { type ProductResponse } from '../pages/products/types';
 
 const navigation: TNavigation = {
   Home: {
@@ -72,7 +71,7 @@ const productLoader = async (args: LoaderFunctionArgs): Promise<CategoryProducts
   const { params } = args;
   const { productSlug } = params as { productSlug: string };
   try {
-    const product = await api.getOne<ProductResponse>(`/products/${productSlug}`);
+    const product = await api.getOne<ProductResource>(`/products/${productSlug}`);
     return product.data;
   } catch (e) {
     return e;

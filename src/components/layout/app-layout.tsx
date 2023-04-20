@@ -3,17 +3,22 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { useAuth } from '../../contexts/auth-context';
 import { type TNavigation } from '../nav/types';
 import { SidebarChildren } from '../nav/sidebar-children';
 import { ProfileDropdown } from '../nav/profile-dropdown';
 import { useLoaderData, Outlet, Link } from 'react-router-dom';
 import { NavLink } from '../links';
+import { CartNav } from '../nav/cart-nav';
+import { VerticalSeparator } from '../separator/vertical';
+import { useAuth } from '../../utils/hooks/use-auth';
+import { useCurrentUser } from '../../utils/hooks/use-current-user';
 
 const AppLayout = (): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { authenticated, signOutUser, username } = useAuth();
+  const { authenticated, signOutUser } = useAuth();
+  const { cart } = useCurrentUser();
   const navigation = useLoaderData() as TNavigation;
+  const cartItems = cart?.relationships?.items?.data ?? [];
 
   const hideSidebar = (): void => {
     setSidebarOpen(false);
@@ -90,7 +95,6 @@ const AppLayout = (): JSX.Element => {
                           hideSidebar={hideSidebar}
                           authenticated={authenticated}
                           signOutUser={signOutUser}
-                          username={username}
                           target={'mobile'}
                         />
                       </li>
@@ -133,7 +137,6 @@ const AppLayout = (): JSX.Element => {
                   hideSidebar={hideSidebar}
                   authenticated={authenticated}
                   signOutUser={signOutUser}
-                  username={username}
                   target={'desktop'}
                 />
               </li>
@@ -181,9 +184,8 @@ const AppLayout = (): JSX.Element => {
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-
-                {/* Separator */}
-                <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
+                <VerticalSeparator />
+                <CartNav items={cartItems} />
               </div>
             </div>
           </div>

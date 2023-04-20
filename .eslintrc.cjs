@@ -33,7 +33,8 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "warn",
         "@typescript-eslint/no-var-requires": "warn",
         "@typescript-eslint/method-signature-style": "off",
-        "@typescript-eslint/strict-boolean-expressions": "warn"
+        "@typescript-eslint/strict-boolean-expressions": "warn",
+        "@typescript-eslint/restrict-template-expressions": "warn"
       }
     }
   ],
@@ -43,8 +44,10 @@ module.exports = {
   },
   plugins: [
     'react',
+    "react-refresh"
   ],
   rules: {
     "react/react-in-jsx-scope": "off",
+    "react-refresh/only-export-components": "warn"
   }
 }

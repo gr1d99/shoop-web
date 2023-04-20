@@ -47,3 +47,7 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 Cypress.Commands.add('dataCy', (name: string) => {
   return cy.get(`[data-cy="${name}"]`);
 });
+
+Cypress.Commands.add('logout', () => {
+  cy.dataCy('user-profile-dropdown-desktop').click().dataCy('logout-btn').click();
+});
