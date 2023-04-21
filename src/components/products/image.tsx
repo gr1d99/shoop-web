@@ -19,7 +19,7 @@ const ProductImage = ({ image, slug }: { image: Image | undefined; slug: string 
           title={imageName}
           src={imageUrl}
           alt={imageAlt}
-          className="h-full w-full object-cover object-center"
+          className="h-36 w-full object-cover object-center lg:h-80"
           data-cy="product-image"
         />
       </Link>
